@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
 
 const LoginForm = () => {
@@ -10,23 +11,31 @@ const LoginForm = () => {
     password: ''
   });
 
+  // Dummy credentials
+  const DUMMY_EMAIL = "admin@gmail.com";
+  const DUMMY_PASSWORD = "password123";
+
+  const navigate = useNavigate();
+
   const validateForm = () => {
     const newErrors = {};
-    
+    const email = formData.email.trim();
+    const password = formData.password;
+
     // Email validation
-    if (!formData.email) {
+    if (!email) {
       newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     // Password validation
-    if (!formData.password) {
+    if (!password || password.trim() === '') {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 6 characters';
+    } else if (password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -49,21 +58,30 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
-    
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log('Login successful with:', formData);
-      // Here you would typically redirect the user or update auth state
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (
+        formData.email.trim() === DUMMY_EMAIL &&
+        formData.password === DUMMY_PASSWORD
+      ) {
+        // Redirect to dashboard
+        navigate("/dashboard");
+      } else {
+        setErrors({
+          ...errors,
+          submit: "Invalid email or password. Please try again."
+        });
+      }
     } catch (error) {
-      console.error('Login failed:', error);
-      setErrors({ 
-        ...errors, 
-        submit: 'Invalid email or password. Please try again.' 
+      setErrors({
+        ...errors,
+        submit: "Something went wrong. Please try again."
       });
     } finally {
       setIsLoading(false);
@@ -90,6 +108,7 @@ const LoginForm = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
               Please sign-in to your account
             </h2>
+            <div className="text-xs text-gray-400 mb-2"></div>
             {errors.submit && (
               <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md flex items-center justify-center gap-2 text-sm">
                 <AlertCircle size={16} />
