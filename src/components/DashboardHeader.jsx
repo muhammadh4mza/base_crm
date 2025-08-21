@@ -1,6 +1,6 @@
 export const DashboardHeader = () => {
   return (
-    <header className="flex items-center justify-between mb-8">
+    <header className="bg-[#f5f5f5] shadow-sm border border-gray-300 flex items-center justify-between mb-8 px-6 py-4">
       <div>
         <h1 className="text-2xl font-bold text-gray-800 mb-1">Dashboard</h1>
         <p className="text-gray-600">You have got 24 new sales.</p>
