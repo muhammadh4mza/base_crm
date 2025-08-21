@@ -52,10 +52,10 @@ export const SalesChart = () => {
             <Line 
               type="monotone" 
               dataKey="sales" 
-              stroke="#3b82f6" 
+              stroke="#000" 
               strokeWidth={3}
-              dot={{ fill: '#3b82f6', strokeWidth: 0, r: 5 }}
-              activeDot={{ r: 7, fill: '#3b82f6' }}
+              dot={{ fill: '#005660', strokeWidth: 0, r: 5 }}
+              activeDot={{ r: 7, fill: '#005660' }}
             />
           </LineChart>
         </ResponsiveContainer>

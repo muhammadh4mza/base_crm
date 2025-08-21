@@ -10,8 +10,8 @@ const Dashboard = () => {
       <Sidebar />
       
       <main className="flex-1 p-8">
-        <DashboardHeader />
-        
+        <DashboardHeader bg-gray-100/>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <MetricCard
             title="Total Sales"
