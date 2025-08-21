@@ -93,8 +93,8 @@ const LoginForm = () => {
       {/* Left Panel */}
   <div className="flex-1 bg-gradient-to-br from-[#000000] to-[#005660] flex flex-col justify-center items-center px-8 md:px-16 text-white">
         <div className="max-w-md flex flex-col items-center justify-center h-full">
-          <h1 className="text-4xl md:text-5xl font-bold mb-8 md:mb-12 tracking-wider">BASE</h1>
-          <p className="text-xl md:text-2xl leading-relaxed">
+          <h1 className="text-4xl md:text-7xl font-bold mb-8 md:mb-12 tracking-wider">BASE</h1>
+          <p className="text-xl md:text-3xl leading-relaxed">
             Enter your details to<br />
             access your account.
           </p>
@@ -108,7 +108,9 @@ const LoginForm = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
               Please sign-in to your account
             </h2>
-            <div className="text-xs text-gray-400 mb-2"></div>
+            <div className="text-xs text-gray-500 mb-4">
+              <span className="block">Email: admin@gmail.com | Password: password123 </span>
+            </div>
             {errors.submit && (
               <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md flex items-center justify-center gap-2 text-sm">
                 <AlertCircle size={16} />
@@ -122,7 +124,7 @@ const LoginForm = () => {
               <input
                 type="email"
                 name="email"
-                placeholder="Email address or Phone Number"
+                placeholder="Email address or Phone number"
                 value={formData.email}
                 onChange={handleInputChange}
                 className={`w-full h-14 bg-gray-100 rounded-lg px-4 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-[#005660] focus:outline-none ${
@@ -198,7 +200,7 @@ const LoginForm = () => {
             </button>
           </form>
 
-          <div className="mt-8 text-center">
+          {/* <div className="mt-8 text-center">
             <p className="text-sm text-gray-500">
               Don't have an account?{' '}
               <button
@@ -209,7 +211,7 @@ const LoginForm = () => {
                 Sign up
               </button>
             </p>
-          </div>
+          </div> */}
 
           <div className="text-center mt-12">
             <p className="text-sm text-gray-500">
