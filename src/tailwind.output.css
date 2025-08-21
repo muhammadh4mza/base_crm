@@ -1570,6 +1570,12 @@ video {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.hover\:from-\[\#8d8d8d81\]:hover {
+  --tw-gradient-from: #8d8d8d81 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(141 141 141 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .hover\:to-\[\#005660\]:hover {
   --tw-gradient-to: #005660 var(--tw-gradient-to-position);
 }
