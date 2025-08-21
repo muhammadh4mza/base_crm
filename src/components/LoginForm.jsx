@@ -23,7 +23,7 @@ const LoginForm = () => {
     // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
+    } else if (formData.password.length < 8) {
       newErrors.password = 'Password must be at least 6 characters';
     }
     
