@@ -27,7 +27,7 @@ export const Sidebar = () => {
   <div className="w-64 h-screen flex flex-col border-r border-gray-200 shadow-sm bg-gradient-to-br from-[#000000] to-[#005660] text-white">
       {/* Logo */}
       <div className="p-6">
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-3xl font-bold text-white">
           BASE
         </h1>
       </div>

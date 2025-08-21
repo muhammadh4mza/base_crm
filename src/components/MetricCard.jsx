@@ -9,8 +9,8 @@ export const MetricCard = ({
   variant = 'secondary' 
 }) => {
   const cardClasses = variant === 'primary' 
-    ? 'bg-[#ECECEC] text-gray-900 border-gray-300'
-    : 'bg-[#ECECEC] text-gray-900 border-gray-300';
+    ? 'bg-[#ECECEC] text-gray-700 border-gray-300'
+    : 'bg-[#ECECEC] text-gray-700 border-gray-300';
 
   const iconClasses = variant === 'primary'
     ? 'bg-blue-700/20 text-white'
@@ -22,7 +22,7 @@ export const MetricCard = ({
   else if (title.toLowerCase().includes('revenue')) iconSrc = revenueIcon;
 
   return (
-  <div className={`p-6 rounded-lg border ${cardClasses} shadow-sm transition-colors duration-200 group hover:bg-gradient-to-br hover:from-[#000000] hover:to-[#005660] hover:text-white`}> 
+  <div className={`p-6 rounded-lg border ${cardClasses} shadow-sm transition-colors duration-200 group hover:bg-[#005660] hover:text-white`}> 
       <div className="flex items-center justify-between">
         <div>
           <p className={`text-sm font-medium mb-2 ${
