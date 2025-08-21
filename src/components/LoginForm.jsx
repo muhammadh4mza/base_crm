@@ -13,20 +13,25 @@ const LoginForm = () => {
 
   // Dummy credentials
   const DUMMY_EMAIL = "admin@gmail.com";
+  const DUMMY_PHONE = "+140756789";
   const DUMMY_PASSWORD = "password123";
 
   const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors = {};
-    const email = formData.email.trim();
+    const emailOrPhone = formData.email.trim();
     const password = formData.password;
 
-    // Email validation
-    if (!email) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Please enter a valid email address';
+    // Email or phone validation
+    if (!emailOrPhone) {
+      newErrors.email = 'Email or phone number is required';
+    } else {
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrPhone);
+      const isPhone = /^\d{11}$/.test(emailOrPhone);
+      if (!isEmail && !isPhone) {
+        newErrors.email = 'Enter a valid email or 11-digit phone number';
+      }
     }
 
     // Password validation
@@ -66,16 +71,16 @@ const LoginForm = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      if (
-        formData.email.trim() === DUMMY_EMAIL &&
-        formData.password === DUMMY_PASSWORD
-      ) {
+      const input = formData.email.trim();
+      const isEmail = input === DUMMY_EMAIL;
+      const isPhone = input === DUMMY_PHONE;
+      if ((isEmail || isPhone) && formData.password === DUMMY_PASSWORD) {
         // Redirect to dashboard
         navigate("/dashboard");
       } else {
         setErrors({
           ...errors,
-          submit: "Invalid email or password. Please try again."
+          submit: "Invalid email, phone, or password. Please try again."
         });
       }
     } catch (error) {
@@ -109,7 +114,9 @@ const LoginForm = () => {
               Please sign-in to your account
             </h2>
             <div className="text-xs text-gray-500 mb-4">
-              <span className="block">Email: admin@gmail.com | Password: password123 </span>
+              <span className="block">Email: <span className="font-semibold text-green-700">admin@gmail.com</span></span>
+              <span className="block">Phone: <span className="font-semibold text-green-700">+140756789</span></span>
+              <span className="block">Password: <span className="font-semibold text-green-700">password123</span></span>
             </div>
             {errors.submit && (
               <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md flex items-center justify-center gap-2 text-sm">
