@@ -22,24 +22,42 @@ export const MetricCard = ({
   else if (title.toLowerCase().includes('revenue')) iconSrc = revenueIcon;
 
   return (
-  <div className={`p-6 rounded-lg border ${cardClasses} shadow-sm transition-colors duration-200 group hover:bg-[#005660] hover:text-white`}> 
+    <div className={`p-4 sm:p-6 rounded-lg border ${cardClasses} shadow-sm transition-colors duration-200 group hover:bg-[#005660] hover:text-white`}> 
       <div className="flex items-center justify-between">
         <div>
-          <p className={`text-sm font-medium mb-2 ${
-            variant === 'primary' 
-              ? 'text-gray-500' 
-              : 'text-gray-500'
-          } group-hover:text-white`}>
+          {/* Title */}
+          <p 
+            className={`text-xs sm:text-sm font-medium mb-1 sm:mb-2 ${
+              variant === 'primary' ? 'text-gray-500' : 'text-gray-500'
+            } group-hover:text-white`}
+          >
             {title}
           </p>
-          <p className="text-5xl font-bold group-hover:text-white">
+
+          {/* Value */}
+          <p className="text-3xl sm:text-5xl font-bold group-hover:text-white">
             {value}
           </p>
         </div>
-        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${iconClasses}`}>
-          {iconSrc ? <img src={iconSrc} alt={title + ' icon'} className="w-12 h-12" /> : null}
+
+        {/* Icon */}
+        <div 
+          className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center ${iconClasses}`}
+        >
+          {iconSrc && (
+            <img 
+              src={iconSrc} 
+              alt={title + ' icon'} 
+              className="w-8 h-8 sm:w-12 sm:h-12 object-contain" 
+            />
+          )}
         </div>
       </div>
     </div>
   );
 };
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <MetricCard title="Total Sales" value="1,250" />
+  <MetricCard title="Orders" value="320" />
+  <MetricCard title="Revenue" value="$12,450" />
+</div>

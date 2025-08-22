@@ -1,19 +1,27 @@
 export const DashboardHeader = () => {
   return (
-    <header className="bg-[#f5f5f5] shadow-sm border border-gray-300 flex items-center justify-between mb-8 px-6 py-4">
+    <header className="bg-[#f5f5f5] shadow-sm border border-gray-300 flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 px-4 sm:px-6 py-4 gap-4 sm:gap-0">
+      {/* Left Side */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-800 mb-1">Dashboard</h1>
-        <p className="text-gray-600">You have got 24 new sales.</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">
+          Dashboard
+        </h1>
+        <p className="text-sm sm:text-base text-gray-600">
+          You have got 24 new sales.
+        </p>
       </div>
-      
-      <div className="flex items-center gap-4">
+
+      {/* Right Side */}
+      <div className="flex items-center gap-4 self-end sm:self-auto">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium text-gray-800">CWC</span>
+          <span className="text-xs sm:text-sm font-medium text-gray-800">
+            CWC
+          </span>
         </div>
-        
-        <div className="w-10 h-10 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center">
-          <span className="text-sm font-medium text-gray-600">U</span>
+
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center">
+          <span className="text-xs sm:text-sm font-medium text-gray-600">U</span>
         </div>
       </div>
     </header>
