@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 export function ProductForm() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6 px-4">
       {/* Top Row: Back+Heading, Actions */}
       <div className="flex items-center justify-between mb-4 gap-4">
 {/* Backward Feature + Heading */}

@@ -185,7 +185,7 @@ export function ProductsPage() {
 
   const navigate = useNavigate();
   return (
-    <div className="flex-1 overflow-auto bg-gray-50 p-4">
+    <div className="flex-1 overflow-auto bg-gray-50 px-4">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -200,48 +200,46 @@ export function ProductsPage() {
         </button>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="mb-4">
-        <FilterTabs 
-          filters={initialFilters} 
-          activeTab={activeTab} 
-          setActiveTab={setActiveTab} 
-        />
-      </div>
-
-      {/* Search and Filters */}
-      <div className="mb-6 flex flex-col md:flex-row items-stretch md:items-center space-y-3 md:space-y-0 md:space-x-4">
-        <div className="relative flex-1">
-          <input
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-4 pr-4 py-2.5 w-full rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660]"
-          />
-        </div>
-        <div className="flex flex-1 space-x-2">
-          <select 
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="border border-gray-300 px-3 py-2.5 rounded-lg text-gray-700 bg-white hover:bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660]"
-          >
-            <option value="All">All Statuses</option>
-            <option value="Active">Active</option>
-            <option value="Draft">Draft</option>
-            <option value="Archived">Archived</option>
-          </select>
-          <select 
-            value={vendorFilter}
-            onChange={(e) => setVendorFilter(e.target.value)}
-            className="border border-gray-300 px-3 py-2.5 rounded-lg text-gray-700 bg-white hover:bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660]"
-          >
-            {vendors.map(vendor => (
-              <option key={vendor} value={vendor}>{vendor}</option>
-            ))}
-          </select>
-          <button className="flex items-center space-x-2 border border-gray-300 px-3 py-2.5 rounded-lg text-gray-700 bg-white hover:bg-gray-50 text-sm">
-            <span>Category</span>
-          </button>
+      {/* Filter Tabs + Search/Filters */}
+      <div className="mb-6 bg-black rounded-xl p-4">
+        <div className="flex flex-col md:flex-row md:items-center gap-4">
+          <div className="flex-1">
+            <FilterTabs 
+              filters={initialFilters} 
+              activeTab={activeTab} 
+              setActiveTab={setActiveTab} 
+            />
+          </div>
+          <div className="flex flex-1 gap-2">
+            <input
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-4 pr-4 py-2.5 w-full rounded-lg border border-gray-700 bg-black text-white focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660] placeholder-gray-400"
+            />
+            <select 
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="border border-gray-700 px-3 py-2.5 rounded-lg text-white bg-black hover:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660]"
+            >
+              <option value="All">All Statuses</option>
+              <option value="Active">Active</option>
+              <option value="Draft">Draft</option>
+              <option value="Archived">Archived</option>
+            </select>
+            <select 
+              value={vendorFilter}
+              onChange={(e) => setVendorFilter(e.target.value)}
+              className="border border-gray-700 px-3 py-2.5 rounded-lg text-white bg-black hover:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660]"
+            >
+              {vendors.map(vendor => (
+                <option key={vendor} value={vendor}>{vendor}</option>
+              ))}
+            </select>
+            <button className="flex items-center space-x-2 border border-gray-700 px-3 py-2.5 rounded-lg text-white bg-black hover:bg-gray-900 text-sm">
+              <span>Category</span>
+            </button>
+          </div>
         </div>
       </div>
 
