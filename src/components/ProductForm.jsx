@@ -68,17 +68,17 @@ export function ProductForm() {
                   <option value="heading2">Heading 2</option>
                 </select>
                 <div className="w-px h-4 bg-gray-300 mx-2" />
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><Bold className="w-4 h-4" /></button>
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><Italic className="w-4 h-4" /></button>
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><Underline className="w-4 h-4" /></button>
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><Type className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><Bold className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><Italic className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><Underline className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><Type className="w-4 h-4" /></button>
                 <div className="w-px h-4 bg-gray-300 mx-2" />
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><AlignLeft className="w-4 h-4" /></button>
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><AlignCenter className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><AlignLeft className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><AlignCenter className="w-4 h-4" /></button>
                 <div className="w-px h-4 bg-gray-300 mx-2" />
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><Link2 className="w-4 h-4" /></button>
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><Image className="w-4 h-4" /></button>
-                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded"><Video className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><Link2 className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><Image className="w-4 h-4" /></button>
+                <button type="button" className="h-8 w-8 p-0 flex items-center justify-center hover:bg-gray-200 rounded border border-gray-300"><Video className="w-4 h-4" /></button>
               </div>
               {/* Text Area */}
               <textarea 
