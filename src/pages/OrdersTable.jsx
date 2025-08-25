@@ -151,7 +151,7 @@ export function OrdersPage() {
           <button className="px-3 py-1.5 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
             Previous
           </button>
-          <button className="px-3 py-1.5 rounded-md border border-gray-300 bg-[#005660] text-sm font-medium text-white border-[#005660]">
+          <button className="px-3 py-1.5 rounded-md border  bg-[#005660] text-sm font-medium text-white border-[#005660]">
             1
           </button>
           <button className="px-3 py-1.5 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
