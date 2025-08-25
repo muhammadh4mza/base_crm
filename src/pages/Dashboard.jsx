@@ -11,6 +11,7 @@ const Dashboard = () => {
       
       <main className="flex-1 ">
         <DashboardHeader />
+        
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 p-8 px-8">
           <MetricCard
@@ -32,7 +33,7 @@ const Dashboard = () => {
         </div>
         <div className="px-8">
           <SalesChart />
-        </div>
+                </div>
       </main>
     </div>
   );

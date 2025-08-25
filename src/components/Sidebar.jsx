@@ -1,3 +1,4 @@
+
 import { 
   LayoutDashboard, 
   Package, 
@@ -6,20 +7,23 @@ import {
   Settings,
   Layers3
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const NavItem = ({ icon, label, isActive = false }) => (
-  <div 
-    className={`
-      flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200
-      ${isActive 
-        ? 'bg-[#949494] text-white' 
-        : 'text-white hover:bg-[#949494] hover:text-white'
-      }
-    `}
-  >
-    <div className="w-5 h-5">{icon}</div>
-    <span className="font-medium">{label}</span>
-  </div>
+const NavItem = ({ icon, label, to, isActive = false }) => (
+  <Link to={to} className="block">
+    <div 
+      className={`
+        flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200
+        ${isActive 
+          ? 'bg-[#949494] text-white' 
+          : 'text-white hover:bg-[#949494] hover:text-white'
+        }
+      `}
+    >
+      <div className="w-5 h-5">{icon}</div>
+      <span className="font-medium">{label}</span>
+    </div>
+  </Link>
 );
 
 export const Sidebar = () => {
@@ -37,27 +41,33 @@ export const Sidebar = () => {
         <NavItem 
           icon={<LayoutDashboard />} 
           label="Dashboards" 
+          to="/dashboard"
           isActive={true}
         />
         <NavItem 
           icon={<Layers3 />} 
           label="Orders" 
+          to="/orders"
         />
         <NavItem 
           icon={<Package />} 
           label="Products" 
+          to="/products"
         />
         <NavItem 
           icon={<Users />} 
           label="Customers" 
+          to="/customers"
         />
         <NavItem 
           icon={<FileText />} 
           label="Invoice" 
+          to="/invoice"
         />
         <NavItem 
           icon={<Settings />} 
           label="Setting" 
+          to="/settings"
         />
       </nav>
     </div>

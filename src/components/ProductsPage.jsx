@@ -1,0 +1,361 @@
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import tracksuitImage from "../assets/images/tracksuit.png";
+
+const initialFilters = [
+  { name: "All", count: 12 },
+  { name: "Active", count: 8 },
+  { name: "Draft", count: 3 },
+  { name: "Archived", count: 1 },
+];
+
+function FilterTabs({ filters, activeTab, setActiveTab }) {
+  const tabRefs = useRef([]);
+  const highlightRef = useRef(null);
+  const [highlightStyle, setHighlightStyle] = useState({ left: 0, width: 0 });
+
+  useEffect(() => {
+    if (tabRefs.current[activeTab]) {
+      const tab = tabRefs.current[activeTab];
+      setHighlightStyle({
+        left: tab.offsetLeft,
+        width: tab.offsetWidth,
+      });
+    }
+  }, [activeTab, filters]);
+
+  return (
+    <div className="relative w-full overflow-x-auto bg-black">
+      <div className="flex gap-2 bg-black p-2 rounded-xl shadow-lg relative min-w-max">
+        {/* Highlight background */}
+        <span
+          ref={highlightRef}
+          className="absolute top-2 bottom-2 rounded-lg bg-gradient-to-r from-[#005660] to-[#005660] blur-md transition-all duration-300 z-0"
+          style={{ left: highlightStyle.left, width: highlightStyle.width }}
+        ></span>
+        {filters.map((filter, index) => (
+          <button
+            key={filter.name}
+            ref={el => (tabRefs.current[index] = el)}
+            onClick={() => setActiveTab(index)}
+            className={`relative px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-2 whitespace-nowrap transition-all duration-300 z-10
+              ${
+                activeTab === index
+                  ? "bg-gradient-to-r from-[#005660] to-[#005660] text-white shadow-md"
+                  : "text-gray-400 hover:text-gray-200 hover:bg-gray-800"
+              }
+            `}
+          >
+            <span>{filter.name}</span>
+            <span
+              className={`px-2 py-0.5 text-xs rounded-full transition-all duration-300 
+                ${
+                  activeTab === index
+                    ? "bg-black/20 text-white"
+                    : "bg-gray-700/60 text-gray-400 group-hover:bg-gray-700 group-hover:text-gray-200"
+                }`}
+            >
+              {filter.count}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const allProducts = [
+  {
+    id: 1,
+    name: "Performance Track Suit",
+    image: tracksuitImage,
+    status: "Active",
+    inventory: "5 in Stock",
+    type: "Physical",
+    price: "$89.99",
+    category: "Active Wear",
+    vendor: "Nike",
+  },
+  {
+    id: 2,
+    name: "Premium Yoga Pants",
+    image: tracksuitImage,
+    status: "Draft",
+    inventory: "0 in Stock",
+    type: "Physical",
+    price: "$59.99",
+    category: "Active Wear",
+    vendor: "Lululemon",
+  },
+  {
+    id: 3,
+    name: "Breathable Running Shorts",
+    image: tracksuitImage,
+    status: "Active",
+    inventory: "12 in Stock",
+    type: "Physical",
+    price: "$39.99",
+    category: "Active Wear",
+    vendor: "Adidas",
+  },
+  {
+    id: 4,
+    name: "Online Fitness Program",
+    image: tracksuitImage,
+    status: "Archived",
+    inventory: "Unlimited",
+    type: "Digital",
+    price: "$29.99",
+    category: "Fitness",
+    vendor: "FitPro",
+  },
+  {
+    id: 5,
+    name: "Weightlifting Gloves",
+    image: tracksuitImage,
+    status: "Active",
+    inventory: "8 in Stock",
+    type: "Physical",
+    price: "$24.99",
+    category: "Accessories",
+    vendor: "Under Armour",
+  },
+  {
+    id: 6,
+    name: "Hydration Backpack",
+    image: tracksuitImage,
+    status: "Active",
+    inventory: "3 in Stock",
+    type: "Physical",
+    price: "$49.99",
+    category: "Accessories",
+    vendor: "CamelBak",
+  },
+];
+
+
+export function ProductsPage() {
+  const [activeTab, setActiveTab] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [vendorFilter, setVendorFilter] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5; // Number of products per page
+
+  // Get unique vendors for filter dropdown
+  const vendors = ["All", ...new Set(allProducts.map(product => product.vendor))];
+
+  // Filter products based on active tab and search term
+  const filteredProducts = allProducts.filter(product => {
+    const filterName = initialFilters[activeTab].name;
+    // Apply tab filter
+    let matchesTab = true;
+    if (filterName === "Active") {
+      matchesTab = product.status === "Active";
+    } else if (filterName === "Draft") {
+      matchesTab = product.status === "Draft";
+    } else if (filterName === "Archived") {
+      matchesTab = product.status === "Archived";
+    }
+    // Apply search filter
+    const matchesSearch = searchTerm === "" || 
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.price.toLowerCase().includes(searchTerm.toLowerCase());
+    // Apply status filter
+    const matchesStatus = statusFilter === "All" || product.status === statusFilter;
+    // Apply vendor filter
+    const matchesVendor = vendorFilter === "All" || product.vendor === vendorFilter;
+    
+    return matchesTab && matchesSearch && matchesStatus && matchesVendor;
+  });
+
+  // Pagination logic
+  const totalProducts = filteredProducts.length;
+  const totalPages = Math.ceil(totalProducts / pageSize);
+  const startIdx = (currentPage - 1) * pageSize;
+  const endIdx = Math.min(startIdx + pageSize, totalProducts);
+  const paginatedProducts = filteredProducts.slice(startIdx, endIdx);
+
+  // Reset to first page if filters/search change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, searchTerm, statusFilter, vendorFilter]);
+
+  const navigate = useNavigate();
+  return (
+    <div className="flex-1 overflow-auto bg-gray-50 p-4">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Product Inventory</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage your products and inventory</p>
+        </div>
+        <button
+          className="bg-[#005660] text-white px-4 py-2.5 rounded-lg hover:bg-[#00444d] transition flex items-center space-x-2"
+          onClick={() => navigate('/add-product')}
+        >
+          <span>+ Add Product</span>
+        </button>
+      </div>
+
+      {/* Filter Tabs */}
+      <div className="mb-4">
+        <FilterTabs 
+          filters={initialFilters} 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+        />
+      </div>
+
+      {/* Search and Filters */}
+      <div className="mb-6 flex flex-col md:flex-row items-stretch md:items-center space-y-3 md:space-y-0 md:space-x-4">
+        <div className="relative flex-1">
+          <input
+            placeholder="Search products..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-4 pr-4 py-2.5 w-full rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660]"
+          />
+        </div>
+        <div className="flex flex-1 space-x-2">
+          <select 
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="border border-gray-300 px-3 py-2.5 rounded-lg text-gray-700 bg-white hover:bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660]"
+          >
+            <option value="All">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Draft">Draft</option>
+            <option value="Archived">Archived</option>
+          </select>
+          <select 
+            value={vendorFilter}
+            onChange={(e) => setVendorFilter(e.target.value)}
+            className="border border-gray-300 px-3 py-2.5 rounded-lg text-gray-700 bg-white hover:bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-[#005660] focus:border-[#005660]"
+          >
+            {vendors.map(vendor => (
+              <option key={vendor} value={vendor}>{vendor}</option>
+            ))}
+          </select>
+          <button className="flex items-center space-x-2 border border-gray-300 px-3 py-2.5 rounded-lg text-gray-700 bg-white hover:bg-gray-50 text-sm">
+            <span>Category</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Products Table */}
+      <ProductsTable products={paginatedProducts} />
+
+      {/* Pagination */}
+      <div className="flex items-center justify-between mt-6 px-2">
+        <div className="text-sm text-gray-700">
+          {totalProducts === 0 ? (
+            <>No results</>
+          ) : (
+            <>
+              Showing <span className="font-medium">{startIdx + 1}</span> to <span className="font-medium">{endIdx}</span> of{' '}
+              <span className="font-medium">{totalProducts}</span> results
+            </>
+          )}
+        </div>
+        <div className="flex space-x-2">
+          <button
+            className="px-3 py-1.5 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              className={`px-3 py-1.5 rounded-md border border-gray-300 text-sm font-medium ${
+                currentPage === i + 1
+                  ? "bg-[#005660] text-white border-[#005660]"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+              onClick={() => setCurrentPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            className="px-3 py-1.5 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages || totalProducts === 0}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductsTable({ products }) {
+  return (
+    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+      <table className="w-full">
+        <thead>
+          <tr className="bg-gray-50 border-b border-gray-200">
+            <th className="w-12 p-4 text-left">
+              <input type="checkbox" className="rounded border-gray-300 text-[#005660] focus:ring-[#005660]" />
+            </th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inventory</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product) => (
+            <tr key={product.id} className="hover:bg-gray-50/50 border-b border-gray-100">
+              <td className="p-4">
+                <input type="checkbox" className="rounded border-gray-300 text-[#005660] focus:ring-[#005660]" />
+              </td>
+              <td className="p-4 font-medium text-gray-900 flex items-center gap-3">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-10 w-10 rounded-lg object-cover border border-gray-200"
+                />
+                {product.name}
+              </td>
+              <td className="p-4 text-gray-500">{product.category}</td>
+              <td className="p-4 text-gray-500">{product.vendor}</td>
+              <td className="p-4">
+                <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+                  product.status === "Active"
+                    ? "bg-green-100 text-green-800"
+                    : product.status === "Draft"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : "bg-gray-100 text-gray-800"
+                }`}>
+                  {product.status}
+                </span>
+              </td>
+              <td className="p-4 text-gray-500">{product.inventory}</td>
+              <td className="p-4 text-gray-500">{product.type}</td>
+              <td className="p-4 font-medium text-gray-900">{product.price}</td>
+            </tr>
+          ))}
+          {products.length === 0 && (
+            <tr>
+              <td colSpan="8" className="p-8 text-center text-gray-500">
+                No products found matching your criteria.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export { FilterTabs };
+export default ProductsPage;
