@@ -51,8 +51,8 @@ export function ProductForm() {
             </label>
             <input
               id="title"
-              placeholder="Short Sleeve T-shirt"
-              defaultValue="Short Sleeve T-shirt"
+              placeholder="Product Title"
+              defaultValue=""
               className="bg-gray-100 border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
