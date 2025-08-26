@@ -11,10 +11,59 @@ import {
   Upload,
   ArrowLeft
 } from "lucide-react";
+import { useState } from "react";
+import { useProducts } from "../context/ProductsContext";
 import { useNavigate } from "react-router-dom";
 
 export function ProductForm() {
+
   const navigate = useNavigate();
+  const { products, setProducts } = useProducts();
+  // Form state
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [descType, setDescType] = useState("paragraph");
+  const [price, setPrice] = useState("");
+  const [comparePrice, setComparePrice] = useState("");
+  const [cost, setCost] = useState("");
+  const [chargeTax, setChargeTax] = useState(false);
+  const [status, setStatus] = useState("draft");
+  const [brand, setBrand] = useState("cwc");
+  const [category, setCategory] = useState("");
+  const [type, setType] = useState("indoor");
+  const [vendor, setVendor] = useState("");
+
+  const handleSave = () => {
+    const newProduct = {
+      id: Date.now(),
+      name: title,
+      image: require("../assets/images/tracksuit.png"),
+      status,
+      inventory: "0 in Stock",
+      type,
+      price: price ? `$${price}` : "",
+      category,
+      vendor,
+    };
+    setProducts([newProduct, ...products]);
+    navigate("/products");
+  };
+
+  const handleDiscard = () => {
+    setTitle("");
+    setDesc("");
+    setDescType("paragraph");
+    setPrice("");
+    setComparePrice("");
+    setCost("");
+    setChargeTax(false);
+    setStatus("draft");
+    setBrand("cwc");
+    setCategory("");
+    setType("indoor");
+    setVendor("");
+  };
+
   return (
     <div className="flex flex-col gap-6 px-4">
       {/* Top Row: Back+Heading, Actions */}
@@ -32,10 +81,10 @@ export function ProductForm() {
 </div>
 {/* Top Action Buttons */}
         <div className="flex flex-1 justify-end gap-2">
-          <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 font-medium">
+          <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 font-medium" onClick={handleDiscard}>
             Discard
           </button>
-          <button type="button" className="px-4 py-2 rounded-lg bg-[#005660] text-white font-medium hover:bg-[#00444d]">
+          <button type="button" className="px-4 py-2 rounded-lg bg-[#005660] text-white font-medium hover:bg-[#00444d]" onClick={handleSave}>
             Save Product
           </button>
         </div>
@@ -52,7 +101,8 @@ export function ProductForm() {
             <input
               id="title"
               placeholder="Product Title"
-              defaultValue=""
+              value={title}
+              onChange={e => setTitle(e.target.value)}
               className="bg-gray-100 border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
@@ -62,7 +112,7 @@ export function ProductForm() {
             <div className="border border-gray-300 rounded-lg bg-gray-100">
               {/* Rich Text Toolbar */}
               <div className="flex items-center gap-1 p-3 border-b border-gray-300">
-                <select defaultValue="paragraph" className="w-32 h-8 bg-transparent border-none text-sm">
+                <select value={descType} onChange={e => setDescType(e.target.value)} className="w-32 h-8 bg-transparent border-none text-sm">
                   <option value="paragraph">Paragraph</option>
                   <option value="heading1">Heading 1</option>
                   <option value="heading2">Heading 2</option>
@@ -84,6 +134,8 @@ export function ProductForm() {
               <textarea 
                 className="min-h-32 border-none bg-transparent resize-none focus:ring-0 w-full p-3"
                 placeholder="Write your product description here..."
+                value={desc}
+                onChange={e => setDesc(e.target.value)}
               />
             </div>
           </div>
@@ -120,6 +172,8 @@ export function ProductForm() {
                   <input
                     id="price"
                     placeholder="0.00"
+                    value={price}
+                    onChange={e => setPrice(e.target.value)}
                     className="pl-7 bg-white border border-gray-300 rounded px-3 py-2 w-full"
                   />
                 </div>
@@ -131,13 +185,15 @@ export function ProductForm() {
                   <input
                     id="compare-price"
                     placeholder="0.00"
+                    value={comparePrice}
+                    onChange={e => setComparePrice(e.target.value)}
                     className="pl-7 bg-white border border-gray-300 rounded px-3 py-2 w-full"
                   />
                 </div>
               </div>
             </div>
             <div className="flex items-center space-x-2 mb-6">
-              <input type="checkbox" id="tax" className="h-4 w-4 rounded border-gray-300" />
+              <input type="checkbox" id="tax" className="h-4 w-4 rounded border-gray-300" checked={chargeTax} onChange={e => setChargeTax(e.target.checked)} />
               <label htmlFor="tax" className="text-sm font-medium">Charge tax on this product</label>
             </div>
             <div className="grid grid-cols-3 gap-4">
@@ -148,6 +204,8 @@ export function ProductForm() {
                   <input
                     id="cost"
                     placeholder="0.00"
+                    value={cost}
+                    onChange={e => setCost(e.target.value)}
                     className="pl-7 bg-white border border-gray-300 rounded px-3 py-2 w-full"
                   />
                 </div>
@@ -172,7 +230,7 @@ export function ProductForm() {
               <span className="text-lg font-semibold">Product Status</span>
             </div>
             <div className="p-4 space-y-4">
-              <select defaultValue="draft" className="w-full border rounded px-3 py-2">
+              <select value={status} onChange={e => setStatus(e.target.value)} className="w-full border rounded px-3 py-2">
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
                 <option value="archived">Archived</option>
@@ -189,10 +247,10 @@ export function ProductForm() {
               <span className="text-lg font-semibold">Select Brand</span>
             </div>
             <div className="p-4">
-              <select defaultValue="cwc" className="w-full border rounded px-3 py-2">
+              <select value={brand} onChange={e => setBrand(e.target.value)} className="w-full border rounded px-3 py-2">
                 <option value="cwc">CWC</option>
-                <option value="cwc">CWC</option>
-                
+                <option value="nike">Nike</option>
+                <option value="adidas">Adidas</option>
               </select>
             </div>
           </div>
@@ -207,6 +265,8 @@ export function ProductForm() {
                 <label className="text-sm font-medium block">Product category</label>
                 <input 
                   placeholder="search product category"
+                  value={category}
+                  onChange={e => setCategory(e.target.value)}
                   className="bg-gray-100 border border-gray-300 rounded px-3 py-2 w-full"
                 />
               </div>
@@ -214,7 +274,8 @@ export function ProductForm() {
                 <label className="text-sm font-medium block">Product Type</label>
                 <input 
                   placeholder="indoor"
-                  defaultValue="indoor"
+                  value={type}
+                  onChange={e => setType(e.target.value)}
                   className="bg-gray-100 border border-gray-300 rounded px-3 py-2 w-full"
                 />
               </div>
@@ -222,6 +283,8 @@ export function ProductForm() {
                 <label className="text-sm font-medium block">Vendor</label>
                 <input 
                   placeholder="Vendor name"
+                  value={vendor}
+                  onChange={e => setVendor(e.target.value)}
                   className="bg-gray-100 border border-gray-300 rounded px-3 py-2 w-full"
                 />
               </div>

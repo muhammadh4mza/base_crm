@@ -13,7 +13,7 @@ const Dashboard = () => {
         <DashboardHeader />
         
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 p-8 px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4 py-4 px-4">
           <MetricCard
             title="Total Sales"
             value="08"
@@ -31,7 +31,7 @@ const Dashboard = () => {
             icon={<DollarSign className="w-6 h-6" />}
           />
         </div>
-        <div className="px-8">
+        <div className="px-4">
           <SalesChart />
                 </div>
       </main>

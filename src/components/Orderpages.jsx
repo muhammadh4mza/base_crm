@@ -1,4 +1,7 @@
+
 import { useState, useRef, useEffect } from "react";
+import { Trash2, Pencil } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const initialFilters = [
   { name: "All", count: 42 },
@@ -153,6 +156,7 @@ const allOrders = [
 
 
 export function OrdersPage() {
+  const [orders, setOrders] = useState(allOrders);
   const [activeTab, setActiveTab] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -160,7 +164,7 @@ export function OrdersPage() {
   const pageSize = 2; // Number of orders per page
 
   // Filter orders based on active tab and search term
-  const filteredOrders = allOrders.filter(order => {
+  const filteredOrders = orders.filter(order => {
     const filterName = initialFilters[activeTab].name;
     // If 'All' tab, show all orders (with search and status filter)
     let matchesTab = true;
@@ -240,7 +244,7 @@ export function OrdersPage() {
       </div>
 
       {/* Orders Table */}
-      <OrdersTable orders={paginatedOrders} />
+  <OrdersTable orders={paginatedOrders} setOrders={setOrders} />
 
       {/* Pagination */}
       <div className="flex items-center justify-between mt-6 px-2">
@@ -288,7 +292,7 @@ export function OrdersPage() {
   );
 }
 
-export function OrdersTable({ orders }) {
+export function OrdersTable({ orders, setOrders }) {
   const getDeliveryStatusColor = (status) => {
     switch(status) {
       case "Delivered": return "bg-green-100 text-green-800";
@@ -310,6 +314,16 @@ export function OrdersTable({ orders }) {
     }
   };
 
+  const navigate = useNavigate();
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this order?")) {
+      setOrders((prev) => prev.filter((o) => o.id !== id));
+    }
+  };
+  const handleEdit = (order) => {
+    // For now, just navigate to add-order with state (future: implement edit mode)
+    navigate("/add-order", { state: { order } });
+  };
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
       <table className="w-full">
@@ -328,6 +342,8 @@ export function OrdersTable({ orders }) {
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivery Status</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivery Method</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tag</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Edit</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -362,11 +378,29 @@ export function OrdersTable({ orders }) {
                   {order.tag}
                 </span>
               </td>
+              <td className="p-4 text-center">
+                <button
+                  onClick={() => handleEdit(order)}
+                  className="text-blue-500 hover:bg-blue-50 rounded-full p-2 transition mr-2"
+                  title="Edit"
+                >
+                  <Pencil className="w-5 h-5" />
+                </button>
+              </td>
+              <td className="p-4 text-center">
+                <button
+                  onClick={() => handleDelete(order.id)}
+                  className="text-red-500 hover:bg-red-50 rounded-full p-2 transition"
+                  title="Delete"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </td>
             </tr>
           ))}
           {orders.length === 0 && (
             <tr>
-              <td colSpan="11" className="p-8 text-center text-gray-500">
+              <td colSpan="13" className="p-8 text-center text-gray-500">
                 No orders found matching your criteria.
               </td>
             </tr>

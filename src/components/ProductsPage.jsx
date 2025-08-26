@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import tracksuitImage from "../assets/images/tracksuit.png";
+import { useProducts } from "../context/ProductsContext";
+import { Trash2, Pencil } from "lucide-react";
 
 const initialFilters = [
   { name: "All", count: 12 },
@@ -64,77 +65,11 @@ function FilterTabs({ filters, activeTab, setActiveTab }) {
   );
 }
 
-const allProducts = [
-  {
-    id: 1,
-    name: "Performance Track Suit",
-    image: tracksuitImage,
-    status: "Active",
-    inventory: "5 in Stock",
-    type: "Physical",
-    price: "$89.99",
-    category: "Active Wear",
-    vendor: "Nike",
-  },
-  {
-    id: 2,
-    name: "Premium Yoga Pants",
-    image: tracksuitImage,
-    status: "Draft",
-    inventory: "0 in Stock",
-    type: "Physical",
-    price: "$59.99",
-    category: "Active Wear",
-    vendor: "Lululemon",
-  },
-  {
-    id: 3,
-    name: "Breathable Running Shorts",
-    image: tracksuitImage,
-    status: "Active",
-    inventory: "12 in Stock",
-    type: "Physical",
-    price: "$39.99",
-    category: "Active Wear",
-    vendor: "Adidas",
-  },
-  {
-    id: 4,
-    name: "Online Fitness Program",
-    image: tracksuitImage,
-    status: "Archived",
-    inventory: "Unlimited",
-    type: "Digital",
-    price: "$29.99",
-    category: "Fitness",
-    vendor: "FitPro",
-  },
-  {
-    id: 5,
-    name: "Weightlifting Gloves",
-    image: tracksuitImage,
-    status: "Active",
-    inventory: "8 in Stock",
-    type: "Physical",
-    price: "$24.99",
-    category: "Accessories",
-    vendor: "Under Armour",
-  },
-  {
-    id: 6,
-    name: "Hydration Backpack",
-    image: tracksuitImage,
-    status: "Active",
-    inventory: "3 in Stock",
-    type: "Physical",
-    price: "$49.99",
-    category: "Accessories",
-    vendor: "CamelBak",
-  },
-];
+
 
 
 export function ProductsPage() {
+  const { products } = useProducts();
   const [activeTab, setActiveTab] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -143,10 +78,10 @@ export function ProductsPage() {
   const pageSize = 5; // Number of products per page
 
   // Get unique vendors for filter dropdown
-  const vendors = ["All", ...new Set(allProducts.map(product => product.vendor))];
+  const vendors = ["All", ...new Set(products.map(product => product.vendor))];
 
   // Filter products based on active tab and search term
-  const filteredProducts = allProducts.filter(product => {
+  const filteredProducts = products.filter(product => {
     const filterName = initialFilters[activeTab].name;
     // Apply tab filter
     let matchesTab = true;
@@ -293,6 +228,17 @@ export function ProductsPage() {
 }
 
 function ProductsTable({ products }) {
+  const { setProducts } = useProducts();
+  const navigate = useNavigate();
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    }
+  };
+  const handleEdit = (product) => {
+    // For now, just navigate to add-product with state (future: implement edit mode)
+    navigate("/add-product", { state: { product } });
+  };
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
       <table className="w-full">
@@ -308,6 +254,8 @@ function ProductsTable({ products }) {
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inventory</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Edit</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -340,11 +288,29 @@ function ProductsTable({ products }) {
               <td className="p-4 text-gray-500">{product.inventory}</td>
               <td className="p-4 text-gray-500">{product.type}</td>
               <td className="p-4 font-medium text-gray-900">{product.price}</td>
+              <td className="p-4 text-center">
+                <button
+                  onClick={() => handleEdit(product)}
+                  className="text-blue-500 hover:bg-blue-50 rounded-full p-2 transition mr-2"
+                  title="Edit"
+                >
+                  <Pencil className="w-5 h-5" />
+                </button>
+              </td>
+              <td className="p-4 text-center">
+                <button
+                  onClick={() => handleDelete(product.id)}
+                  className="text-red-500 hover:bg-red-50 rounded-full p-2 transition"
+                  title="Delete"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </td>
             </tr>
           ))}
           {products.length === 0 && (
             <tr>
-              <td colSpan="8" className="p-8 text-center text-gray-500">
+              <td colSpan="10" className="p-8 text-center text-gray-500">
                 No products found matching your criteria.
               </td>
             </tr>
