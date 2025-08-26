@@ -322,7 +322,7 @@ export function OrdersTable({ orders, setOrders }) {
   };
   const handleEdit = (order) => {
     // For now, just navigate to add-order with state (future: implement edit mode)
-    navigate("/add-order", { state: { order } });
+    navigate("#", { state: { order } });
   };
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
