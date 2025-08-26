@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { DashboardHeader } from "../components/DashboardHeader";
-              import { CustomersTable } from "../components/CustomersTable";
+import { CustomersTable } from "../components/CustomersTable";
 
 
 const Customer = () => {
@@ -9,7 +9,7 @@ const Customer = () => {
       <Sidebar />
       
       <main className="flex-1 ">
-  <DashboardHeader title="Products" />
+  <DashboardHeader title="Customers" />
 
         <CustomersTable />
 

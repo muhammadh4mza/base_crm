@@ -8,6 +8,7 @@ import Product from "./pages/Product";
 import AddProduct from "./pages/AddProduct";
 import Customer from "./pages/Customer";
 import Invoices from "./pages/Invoices";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/customers" element={<Customer />} />
             <Route path="/invoice" element={<Invoices />} />
+            <Route path="/settings" element={<Settings />} />
+
           </Routes>
         </Router>
       </ProductsProvider>
