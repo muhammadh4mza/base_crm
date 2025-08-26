@@ -5,7 +5,7 @@ import { ProductForm } from "../components/ProductForm";
 const AddProduct = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
+      <Sidebar className="w-64 h-screen top-0 left-0 z-30" />
       <main className="flex-1">
         <DashboardHeader title="Add Product" />
         <ProductForm  />

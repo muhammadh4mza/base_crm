@@ -29,7 +29,7 @@ const NavItem = ({ icon, label, to, isActive = false }) => (
 export const Sidebar = () => {
   const location = useLocation();
   return (
-    <div className="w-64 h-screen flex flex-col border-r border-gray-200 shadow-sm bg-gradient-to-br from-[#000000] to-[#005660] text-white">
+    <div className="w-64 h-screen top-0 left-0 z-30 flex flex-col border-r border-gray-200 shadow-sm bg-gradient-to-br from-[#000000] to-[#005660] text-white">
       {/* Logo */}
       <div className="p-6">
         <h1 className="text-3xl font-bold text-white">
