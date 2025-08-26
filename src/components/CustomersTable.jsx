@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Download, MoreHorizontal } from "lucide-react";
+import { Download, MoreHorizontal, Trash2, Pencil } from "lucide-react";
 
-const customersData = [
+const initialCustomers = [
   {
     id: "1",
     name: "Jordan",
@@ -48,13 +48,67 @@ const customersData = [
   }
 ];
 
+
 export function CustomersTable() {
   const [filter, setFilter] = useState("All Customers");
+  const [customers, setCustomers] = useState(initialCustomers);
+  const [search, setSearch] = useState("");
+  const [editId, setEditId] = useState(null);
+  const [editData, setEditData] = useState({});
+
+  // Filter and search logic
+  const filteredCustomers = customers.filter((customer) => {
+    let matchesFilter = true;
+    if (filter === "Active") matchesFilter = customer.orders > 5;
+    if (filter === "Inactive") matchesFilter = customer.orders <= 5;
+    const matchesSearch =
+      customer.name.toLowerCase().includes(search.toLowerCase()) ||
+      customer.brand.toLowerCase().includes(search.toLowerCase()) ||
+      customer.country.toLowerCase().includes(search.toLowerCase()) ||
+      customer.region.toLowerCase().includes(search.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
+
+  // Delete customer
+  const handleDelete = (id) => {
+    setCustomers((prev) => prev.filter((c) => c.id !== id));
+  };
+
+  // Edit customer
+  const handleEdit = (customer) => {
+    setEditId(customer.id);
+    setEditData(customer);
+  };
+
+  // Save edit
+  const handleSave = () => {
+    setCustomers((prev) => prev.map((c) => (c.id === editId ? editData : c)));
+    setEditId(null);
+    setEditData({});
+  };
+
+  // Add customer (demo: adds a blank row)
+  const handleAdd = () => {
+    const newCustomer = {
+      id: Date.now().toString(),
+      name: "",
+      lastActive: "",
+      dateRegistered: "",
+      brand: "",
+      orders: 0,
+      totalSpend: "$0.00",
+      country: "",
+      region: ""
+    };
+    setCustomers((prev) => [newCustomer, ...prev]);
+    setEditId(newCustomer.id);
+    setEditData(newCustomer);
+  };
 
   return (
-    <div className="bg-white rounded-lg border p-6 space-y-6">
+    <div className="bg-white rounded-lg border p-4 space-y-6">
       {/* Controls Bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center space-x-4">
           <span className="text-sm font-medium">Show :</span>
           <select
@@ -67,10 +121,21 @@ export function CustomersTable() {
             <option value="Inactive">Inactive Customers</option>
           </select>
         </div>
-
-        <button className="bg-[#005660] hover:bg-[#00444d] text-white px-4 py-2 rounded font-medium transition">
-          Add Customer
-        </button>
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            placeholder="Search customers..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 text-sm bg-white w-56"
+          />
+          <button
+            className="bg-[#005660] hover:bg-[#00444d] text-white px-4 py-2 rounded font-medium transition"
+            onClick={handleAdd}
+          >
+            Add Customer
+          </button>
+        </div>
       </div>
 
       {/* Table Container */}
@@ -102,28 +167,151 @@ export function CustomersTable() {
                 <th className="p-3 text-left font-medium text-gray-700">Total Spend</th>
                 <th className="p-3 text-left font-medium text-gray-700">Country</th>
                 <th className="p-3 text-left font-medium text-gray-700">Region</th>
+                <th className="p-3 text-center font-medium text-gray-700">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {customersData.map((customer, index) => (
-                <tr
-                  key={customer.id}
-                  className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                >
-                  <td className="p-3 font-medium">{customer.name}</td>
-                  <td className="p-3">{customer.lastActive}</td>
-                  <td className="p-3">{customer.dateRegistered}</td>
-                  <td className="p-3 font-medium">{customer.brand}</td>
-                  <td className="p-3">
-                    <span className="px-2 py-1 bg-gray-200 rounded text-xs font-medium">
-                      {customer.orders.toString().padStart(2, '0')}
-                    </span>
-                  </td>
-                  <td className="p-3 font-medium">{customer.totalSpend}</td>
-                  <td className="p-3">{customer.country}</td>
-                  <td className="p-3">{customer.region}</td>
+              {filteredCustomers.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="p-6 text-center text-gray-400">No customers found.</td>
                 </tr>
-              ))}
+              ) : (
+                filteredCustomers.map((customer, index) => (
+                  <tr
+                    key={customer.id}
+                    className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                  >
+                    {/* Editable fields */}
+                    <td className="p-3 font-medium">
+                      {editId === customer.id ? (
+                        <input
+                          className="border rounded px-2 py-1 text-sm w-24"
+                          value={editData.name || ""}
+                          onChange={e => setEditData({ ...editData, name: e.target.value })}
+                        />
+                      ) : (
+                        customer.name
+                      )}
+                    </td>
+                    <td className="p-3">
+                      {editId === customer.id ? (
+                        <input
+                          className="border rounded px-2 py-1 text-sm w-28"
+                          value={editData.lastActive || ""}
+                          onChange={e => setEditData({ ...editData, lastActive: e.target.value })}
+                        />
+                      ) : (
+                        customer.lastActive
+                      )}
+                    </td>
+                    <td className="p-3">
+                      {editId === customer.id ? (
+                        <input
+                          className="border rounded px-2 py-1 text-sm w-28"
+                          value={editData.dateRegistered || ""}
+                          onChange={e => setEditData({ ...editData, dateRegistered: e.target.value })}
+                        />
+                      ) : (
+                        customer.dateRegistered
+                      )}
+                    </td>
+                    <td className="p-3 font-medium">
+                      {editId === customer.id ? (
+                        <input
+                          className="border rounded px-2 py-1 text-sm w-20"
+                          value={editData.brand || ""}
+                          onChange={e => setEditData({ ...editData, brand: e.target.value })}
+                        />
+                      ) : (
+                        customer.brand
+                      )}
+                    </td>
+                    <td className="p-3">
+                      {editId === customer.id ? (
+                        <input
+                          type="number"
+                          className="border rounded px-2 py-1 text-sm w-12"
+                          value={editData.orders || 0}
+                          onChange={e => setEditData({ ...editData, orders: Number(e.target.value) })}
+                        />
+                      ) : (
+                        <span className="px-2 py-1 bg-gray-200 rounded text-xs font-medium">
+                          {customer.orders.toString().padStart(2, '0')}
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-3 font-medium">
+                      {editId === customer.id ? (
+                        <input
+                          className="border rounded px-2 py-1 text-sm w-16"
+                          value={editData.totalSpend || ""}
+                          onChange={e => setEditData({ ...editData, totalSpend: e.target.value })}
+                        />
+                      ) : (
+                        customer.totalSpend
+                      )}
+                    </td>
+                    <td className="p-3">
+                      {editId === customer.id ? (
+                        <input
+                          className="border rounded px-2 py-1 text-sm w-16"
+                          value={editData.country || ""}
+                          onChange={e => setEditData({ ...editData, country: e.target.value })}
+                        />
+                      ) : (
+                        customer.country
+                      )}
+                    </td>
+                    <td className="p-3">
+                      {editId === customer.id ? (
+                        <input
+                          className="border rounded px-2 py-1 text-sm w-16"
+                          value={editData.region || ""}
+                          onChange={e => setEditData({ ...editData, region: e.target.value })}
+                        />
+                      ) : (
+                        customer.region
+                      )}
+                    </td>
+                    {/* Actions */}
+                    <td className="p-3 flex items-center gap-2 justify-center">
+                      {editId === customer.id ? (
+                        <>
+                          <button
+                            className="text-green-600 hover:underline text-xs font-semibold"
+                            onClick={handleSave}
+                          >
+                            Save
+                          </button>
+                          <button
+                            className="text-gray-400 hover:text-gray-600 text-xs font-semibold"
+                            onClick={() => { setEditId(null); setEditData({}); }}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="text-blue-600 hover:text-blue-800"
+                            onClick={() => handleEdit(customer)}
+                            title="Edit"
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                          <button
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => handleDelete(customer.id)}
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

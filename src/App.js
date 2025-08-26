@@ -7,6 +7,7 @@ import Orders from "./pages/Orders";
 import Product from "./pages/Product";
 import AddProduct from "./pages/AddProduct";
 import Customer from "./pages/Customer";
+import Invoices from "./pages/Invoices";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/products" element={<Product />} />
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/customers" element={<Customer />} />
+            <Route path="/invoice" element={<Invoices />} />
           </Routes>
         </Router>
       </ProductsProvider>
