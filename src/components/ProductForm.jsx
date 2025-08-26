@@ -249,8 +249,8 @@ export function ProductForm() {
             <div className="p-4">
               <select value={brand} onChange={e => setBrand(e.target.value)} className="w-full border rounded px-3 py-2">
                 <option value="cwc">CWC</option>
-                <option value="nike">Nike</option>
-                <option value="adidas">Adidas</option>
+                <option value="bbdazz">BBDAZZ</option>
+                
               </select>
             </div>
           </div>

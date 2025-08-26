@@ -8,7 +8,7 @@ const AddProduct = () => {
       <Sidebar />
       <main className="flex-1">
         <DashboardHeader title="Add Product" />
-        <ProductForm />
+        <ProductForm  />
       </main>
     </div>
   );
