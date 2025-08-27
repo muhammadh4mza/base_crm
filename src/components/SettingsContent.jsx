@@ -8,7 +8,6 @@ const tabs = [
 export default function SettingsContent() {
   const [activeTab, setActiveTab] = useState("profile");
   const [businessName, setBusinessName] = useState("CWC");
-  const [logo, setLogo] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
   const [colorTheme, setColorTheme] = useState("#005660");
   const [isEditingBusinessName, setIsEditingBusinessName] = useState(false);
@@ -25,7 +24,6 @@ export default function SettingsContent() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setLogo(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoPreview(reader.result);
@@ -38,7 +36,6 @@ export default function SettingsContent() {
   const handleEditBusinessName = () => {
     setIsEditingBusinessName(true);
   };
-
   const handleSaveBusinessName = () => {
     setIsEditingBusinessName(false);
   };
@@ -48,9 +45,6 @@ export default function SettingsContent() {
   };
 
   // Handle color theme selection
-  const handleEditColorTheme = () => {
-    setIsColorPickerOpen(true);
-  };
 
   const handleColorSelect = (color) => {
     setColorTheme(color);
@@ -62,7 +56,7 @@ export default function SettingsContent() {
   // On mount, set the CSS variable to the current colorTheme
   useEffect(() => {
     document.documentElement.style.setProperty('--theme-color', colorTheme);
-  }, []);
+  }, [colorTheme]);
 
   return (
     <div className="flex-1 p-6 bg-gray-50 ">
@@ -117,7 +111,6 @@ export default function SettingsContent() {
               {logoPreview && (
                 <button
                   onClick={() => {
-                    setLogo(null);
                     setLogoPreview(null);
                   }}
                   className="border border-gray-300 px-4 py-2 rounded-lg font-medium text-gray-700 hover:bg-gray-100 transition-colors"
