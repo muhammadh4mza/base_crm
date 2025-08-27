@@ -132,7 +132,7 @@ export function InvoiceTable() {
             className="bg-[#005660] hover:bg-[#00444d] text-white px-4 py-2 rounded font-medium transition"
             onClick={handleAdd}
           >
-            Add Invoice
+             Invoice
           </button>
         </div>
       </div>
