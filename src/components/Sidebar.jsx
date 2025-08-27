@@ -15,8 +15,8 @@ const NavItem = ({ icon, label, to, isActive = false }) => (
       className={`
         flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200
         ${isActive 
-          ? 'bg-[var(--theme-color)] text-white' 
-          : 'text-white hover:bg-[var(--theme-color)] hover:text-white'
+          ? 'bg-gray-400/50 text-white' 
+          : 'text-white hover:bg-gray-400/50 hover:text-white'
         }
       `}
     >
