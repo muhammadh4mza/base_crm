@@ -48,16 +48,9 @@ export const MetricCard = ({
         <div 
           className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center ${iconClasses} flex-shrink-0 group-hover:bg-white/20 group-hover:text-white`}
         >
-          {getIcon()}
+            {getIcon()}
         </div>
       </div>
     </div>
   );
 };
-
-// Usage example
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-  <MetricCard title="Total Sales" value="1,250" />
-  <MetricCard title="Orders" value="320" />
-  <MetricCard title="Revenue" value="$12,450" />
-</div>

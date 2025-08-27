@@ -3,7 +3,7 @@ export const DashboardHeader = ({ title = "Dashboard" }) => {
     <header className="bg-[#f5f5f5] shadow-sm border border-gray-300 flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 px-4 sm:px-6 py-4 gap-4 sm:gap-0">
       {/* Left Side */}
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">
+  <h1 className="text-xl sm:text-2xl font-bold text-[var(--theme-color)] mb-1">
           {title}
         </h1>
         <p className="text-sm sm:text-base text-gray-600">

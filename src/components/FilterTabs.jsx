@@ -43,7 +43,7 @@ function FilterTabs({ filters }) {
             className={`relative px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-2 whitespace-nowrap transition-all duration-300 z-10
               ${
                 activeTab === index
-                  ? "bg-gradient-to-r from-[#005660] to-[#005660] text-white shadow-md"
+                  ? "bg-gradient-to-r from-[var(--theme-color)] to-[var(--theme-color)] text-white shadow-md"
                   : "text-gray-400 hover:text-gray-200 hover:bg-gray-800"
               }
             `}
