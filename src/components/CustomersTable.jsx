@@ -235,7 +235,7 @@ export function CustomersTable() {
                           onChange={e => setEditData({ ...editData, orders: Number(e.target.value) })}
                         />
                       ) : (
-                        <span className="px-2 py-1 bg-gray-200 rounded text-xs font-medium">
+                        <span className="px-2 py-1 bg-[#005660] rounded text-xs text-white font-medium">
                           {customer.orders.toString().padStart(2, '0')}
                         </span>
                       )}
