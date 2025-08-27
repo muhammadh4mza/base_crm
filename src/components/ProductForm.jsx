@@ -84,7 +84,7 @@ export function ProductForm() {
           <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 font-medium" onClick={handleDiscard}>
             Discard
           </button>
-          <button type="button" className="px-4 py-2 rounded-lg bg-[#005660] text-white font-medium hover:bg-[#00444d]" onClick={handleSave}>
+          <button type="button" className="px-4 py-2 rounded-lg bg-[var(--theme-color)] text-white font-medium hover:opacity-90" onClick={handleSave}>
             Save Product
           </button>
         </div>
@@ -151,7 +151,7 @@ export function ProductForm() {
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                   <Upload className="w-6 h-6 text-[#005660]" />
                 </div>
-                <button type="button" className="border border-[#005660] text-[#005660] hover:bg-[#005660] hover:text-white px-4 py-2 rounded transition-colors flex items-center">
+                <button type="button" className="border border-[var(--theme-color)] text-[var(--theme-color)] hover:bg-[var(--theme-color)] hover:text-white px-4 py-2 rounded transition-colors flex items-center">
                   Add file
                 </button>
               </div>

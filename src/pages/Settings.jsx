@@ -1,5 +1,7 @@
+
 import { Sidebar } from "../components/Sidebar";
 import { DashboardHeader } from "../components/DashboardHeader";
+import SettingsContent from "../components/SettingsContent";
 
 
 
@@ -9,9 +11,8 @@ const Settings = () => {
       <Sidebar />
       
       <main className="flex-1 ">
-  <DashboardHeader title="Settings" />
-
-
+        <DashboardHeader title="Settings" />
+        <SettingsContent />
       </main>
     </div>
   );

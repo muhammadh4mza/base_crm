@@ -15,8 +15,8 @@ const NavItem = ({ icon, label, to, isActive = false }) => (
       className={`
         flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200
         ${isActive 
-          ? 'bg-[#949494] text-white' 
-          : 'text-white hover:bg-[#949494] hover:text-white'
+          ? 'bg-[var(--theme-color)] text-white' 
+          : 'text-white hover:bg-[var(--theme-color)] hover:text-white'
         }
       `}
     >
@@ -29,7 +29,7 @@ const NavItem = ({ icon, label, to, isActive = false }) => (
 export const Sidebar = () => {
   const location = useLocation();
   return (
-    <div className="w-64 h-screen top-0 left-0 z-30 flex flex-col border-r border-gray-200 shadow-sm bg-gradient-to-br from-[#000000] to-[#005660] text-white">
+  <div className="w-64 h-screen top-0 left-0 z-30 flex flex-col border-r border-gray-200 shadow-sm bg-gradient-to-br from-[#000000] to-[var(--theme-color)] text-white">
       {/* Logo */}
       <div className="p-6">
         <h1 className="text-3xl font-bold text-white">

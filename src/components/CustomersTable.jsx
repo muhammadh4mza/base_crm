@@ -130,7 +130,7 @@ export function CustomersTable() {
             className="border border-gray-300 rounded px-3 py-2 text-sm bg-white w-56"
           />
           <button
-            className="bg-[#005660] hover:bg-[#00444d] text-white px-4 py-2 rounded font-medium transition"
+            className="bg-[var(--theme-color)] hover:opacity-90 text-white px-4 py-2 rounded font-medium transition"
             onClick={handleAdd}
           >
             Add Customer
