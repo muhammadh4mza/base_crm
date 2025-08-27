@@ -158,16 +158,16 @@ export function CustomersTable() {
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="p-3 text-left font-medium text-gray-700">Name</th>
-                <th className="p-3 text-left font-medium text-gray-700">Last active</th>
-                <th className="p-3 text-left font-medium text-gray-700">Date Registered</th>
-                <th className="p-3 text-left font-medium text-gray-700">Brand</th>
-                <th className="p-3 text-left font-medium text-gray-700">Orders</th>
-                <th className="p-3 text-left font-medium text-gray-700">Total Spend</th>
-                <th className="p-3 text-left font-medium text-gray-700">Country</th>
-                <th className="p-3 text-left font-medium text-gray-700">Region</th>
-                <th className="p-3 text-center font-medium text-gray-700">Actions</th>
+              <tr className="bg-black">
+                <th className="p-3 text-left font-medium text-gray-100">Name</th>
+                <th className="p-3 text-left font-medium text-gray-100">Last active</th>
+                <th className="p-3 text-left font-medium text-gray-100">Date Registered</th>
+                <th className="p-3 text-left font-medium text-gray-100">Brand</th>
+                <th className="p-3 text-left font-medium text-gray-100">Orders</th>
+                <th className="p-3 text-left font-medium text-gray-100">Total Spend</th>
+                <th className="p-3 text-left font-medium text-gray-100">Country</th>
+                <th className="p-3 text-left font-medium text-gray-100">Region</th>
+                <th className="p-3 text-center font-medium text-gray-100">Actions</th>
               </tr>
             </thead>
             <tbody>

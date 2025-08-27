@@ -145,14 +145,14 @@ export function InvoiceTable() {
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="p-3 text-left font-medium text-gray-700">Invoice #</th>
-                <th className="p-3 text-left font-medium text-gray-700">Customer</th>
-                <th className="p-3 text-left font-medium text-gray-700">Date</th>
-                <th className="p-3 text-left font-medium text-gray-700">Due Date</th>
-                <th className="p-3 text-left font-medium text-gray-700">Amount</th>
-                <th className="p-3 text-left font-medium text-gray-700">Status</th>
-                <th className="p-3 text-center font-medium text-gray-700">Actions</th>
+              <tr className="bg-black">
+                <th className="p-3 text-left font-medium text-gray-100">Invoice #</th>
+                <th className="p-3 text-left font-medium text-gray-100">Customer</th>
+                <th className="p-3 text-left font-medium text-gray-100">Date</th>
+                <th className="p-3 text-left font-medium text-gray-100">Due Date</th>
+                <th className="p-3 text-left font-medium text-gray-100">Amount</th>
+                <th className="p-3 text-left font-medium text-gray-100">Status</th>
+                <th className="p-3 text-center font-medium text-gray-100">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -271,13 +271,13 @@ export function InvoiceTable() {
                             <Trash2 className="w-4 h-4" />
                           </button>
                           <button
-                            className="text-gray-500 hover:text-gray-700"
+                            className="text-[#005660] hover:text-gray-700"
                             title="View"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
-                            className="text-gray-500 hover:text-gray-700"
+                            className="text-yellow-500 hover:text-yellow-700"
                             title="Download"
                           >
                             <Download className="w-4 h-4" />
