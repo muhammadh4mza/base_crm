@@ -9,6 +9,8 @@ import AddProduct from "./pages/AddProduct";
 import Customer from "./pages/Customer";
 import Invoices from "./pages/Invoices";
 import Settings from "./pages/Settings";
+import AddOrder from "./pages/AddOrder";
+// import AddOrderCombined from "./pages/AddOrderCombined";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
             <Route path="/customers" element={<Customer />} />
             <Route path="/invoice" element={<Invoices />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/add-order" element={<AddOrder />} />
+            {/* <Route path="/add-order-combined" element={<AddOrderCombined />} /> */}
 
           </Routes>
         </Router>

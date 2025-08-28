@@ -1,7 +1,9 @@
 
+
 import { useState, useRef, useEffect } from "react";
 import { Trash2, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ProductList from "./ProductList";
 
 const initialFilters = [
   { name: "All", count: 42 },
@@ -80,7 +82,11 @@ const allOrders = [
     items: 3,
     deliveryStatus: "Pending",
     deliveryMethod: "Standard Shipping",
-    tag: "Regular"
+    tag: "Regular",
+    products: [
+      { id: 1, name: "Product 1", price: 29.99, image: "https://via.placeholder.com/80", quantity: 1 },
+      { id: 2, name: "Product 2", price: 49.99, image: "https://via.placeholder.com/80", quantity: 2 },
+    ]
   },
   {
     id: "997",
@@ -94,7 +100,10 @@ const allOrders = [
     items: 1,
     deliveryStatus: "Processing",
     deliveryMethod: "In-Store Pickup",
-    tag: "VIP"
+    tag: "VIP",
+    products: [
+      { id: 3, name: "Product 3", price: 45.00, image: "https://via.placeholder.com/80", quantity: 1 },
+    ]
   },
   {
     id: "991",
@@ -108,7 +117,11 @@ const allOrders = [
     items: 2,
     deliveryStatus: "Shipped",
     deliveryMethod: "Express Shipping",
-    tag: "New"
+    tag: "New",
+    products: [
+      { id: 4, name: "Product 4", price: 30.00, image: "https://via.placeholder.com/80", quantity: 1 },
+      { id: 5, name: "Product 5", price: 22.00, image: "https://via.placeholder.com/80", quantity: 1 },
+    ]
   },
   {
     id: "988",
@@ -122,7 +135,10 @@ const allOrders = [
     items: 1,
     deliveryStatus: "Delivered",
     deliveryMethod: "Local Courier",
-    tag: "Sale"
+    tag: "Sale",
+    products: [
+      { id: 6, name: "Product 6", price: 25.00, image: "https://via.placeholder.com/80", quantity: 1 },
+    ]
   },
   {
     id: "985",
@@ -136,7 +152,10 @@ const allOrders = [
     items: 5,
     deliveryStatus: "Pending",
     deliveryMethod: "Standard Shipping",
-    tag: "Bulk"
+    tag: "Bulk",
+    products: [
+      { id: 7, name: "Product 7", price: 24.00, image: "https://via.placeholder.com/80", quantity: 5 },
+    ]
   },
   {
     id: "982",
@@ -150,9 +169,13 @@ const allOrders = [
     items: 2,
     deliveryStatus: "Out for Delivery",
     deliveryMethod: "Local Delivery",
-    tag: "Regular"
+    tag: "Regular",
+    products: [
+      { id: 8, name: "Product 8", price: 32.50, image: "https://via.placeholder.com/80", quantity: 2 },
+    ]
   }
 ];
+
 
 
 export function OrdersPage() {
@@ -161,6 +184,7 @@ export function OrdersPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const pageSize = 2; // Number of orders per page
 
   // Filter orders based on active tab and search term
@@ -244,7 +268,15 @@ export function OrdersPage() {
       </div>
 
       {/* Orders Table */}
-  <OrdersTable orders={paginatedOrders} setOrders={setOrders} />
+      <OrdersTable orders={paginatedOrders} setOrders={setOrders} onSelectOrder={setSelectedOrder} />
+
+      {/* ProductList for selected order */}
+      {selectedOrder && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4">Products for Order #{selectedOrder.id}</h2>
+          <ProductList products={selectedOrder.products} readOnly />
+        </div>
+      )}
 
       {/* Pagination */}
       <div className="flex items-center justify-between mt-6 px-2">
@@ -292,7 +324,7 @@ export function OrdersPage() {
   );
 }
 
-export function OrdersTable({ orders, setOrders }) {
+export function OrdersTable({ orders, setOrders, onSelectOrder }) {
   const getDeliveryStatusColor = (status) => {
     switch(status) {
       case "Delivered": return "bg-green-100 text-green-800";
@@ -352,12 +384,22 @@ export function OrdersTable({ orders, setOrders }) {
               <td className="p-4">
                 <input type="checkbox" className="rounded border-gray-300 text-[#005660] focus:ring-[#005660]" />
               </td>
-              <td className="p-4 font-medium text-gray-900">#{order.id}</td>
+              <td className="p-4 font-medium text-gray-900">
+                <button onClick={() => onSelectOrder && onSelectOrder(order)} className="text-[#005660] underline">
+                  #{order.id}
+                </button>
+              </td>
               <td className="p-4 text-gray-500">{order.date}</td>
               <td className="p-4 text-gray-500">{order.customer}</td>
               <td className="p-4 text-gray-500">{order.channel}</td>
               <td className="p-4 text-gray-500">{order.items}</td>
-              <td className="p-4 font-medium text-gray-900">{order.total}</td>
+              <td className="p-4 font-medium text-gray-900">
+                ${
+                  order.products && order.products.length > 0
+                    ? order.products.reduce((sum, p) => sum + (Number(p.price) || 0) * (p.quantity ?? 1), 0).toFixed(2)
+                    : order.total
+                }
+              </td>
               <td className="p-4">
                 <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
                   order.payment === "Paid" 

@@ -13,6 +13,7 @@ const initialProducts = [
     price: "$89.99",
     category: "Active Wear",
     vendor: "Nike",
+    quantity: 1,
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ const initialProducts = [
     price: "$59.99",
     category: "Active Wear",
     vendor: "Lululemon",
+    quantity: 1,
   },
   {
     id: 3,
@@ -35,6 +37,7 @@ const initialProducts = [
     price: "$39.99",
     category: "Active Wear",
     vendor: "Adidas",
+    quantity: 1,
   },
   {
     id: 4,
@@ -46,6 +49,7 @@ const initialProducts = [
     price: "$29.99",
     category: "Fitness",
     vendor: "FitPro",
+    quantity: 1,
   },
   {
     id: 5,
@@ -57,6 +61,7 @@ const initialProducts = [
     price: "$24.99",
     category: "Accessories",
     vendor: "Under Armour",
+    quantity: 1,
   },
   {
     id: 6,
@@ -68,13 +73,30 @@ const initialProducts = [
     price: "$49.99",
     category: "Accessories",
     vendor: "CamelBak",
+    quantity: 1,
   },
 ];
 
 export function ProductsProvider({ children }) {
   const [products, setProducts] = useState(initialProducts);
+
+  // Add updateQuantity and removeProduct helpers
+  const updateQuantity = (id, newQuantity) => {
+    setProducts((prev) =>
+      prev.map((product) =>
+        product.id === id
+          ? { ...product, quantity: Math.max(1, newQuantity) }
+          : product
+      )
+    );
+  };
+
+  const removeProduct = (id) => {
+    setProducts((prev) => prev.filter((product) => product.id !== id));
+  };
+
   return (
-    <ProductsContext.Provider value={{ products, setProducts }}>
+    <ProductsContext.Provider value={{ products, setProducts, updateQuantity, removeProduct }}>
       {children}
     </ProductsContext.Provider>
   );
