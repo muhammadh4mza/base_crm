@@ -196,7 +196,7 @@ export function CustomersTable() {
             <thead>
               <tr className="bg-black">
                 <th className="p-3 text-left font-medium text-gray-100">Name</th>
-                <th className="p-3 text-left font-medium text-gray-100">Last active</th>
+                <th className="p-3 text-left font-medium text-gray-100">Last Active</th>
                 <th className="p-3 text-left font-medium text-gray-100">Date Registered</th>
                 <th className="p-3 text-left font-medium text-gray-100">Brand</th>
                 <th className="p-3 text-left font-medium text-gray-100">Orders</th>
