@@ -7,13 +7,13 @@ export function CustomerSection() {
 
   const brands = [
     { id: "cwc", name: "CWC", customers: 254 },
-    { id: "brand1", name: "Brand 1", customers: 128 },
-    { id: "brand2", name: "Brand 2", customers: 76 }
+    { id: "bbdazz", name: "BBDAZZ", customers: 128 },
+    // { id: "brand2", name: "Brand 2", customers: 76 }
   ];
 
-  const handleAddNewCustomer = () => {
-    alert("Add new customer functionality would open here");
-  };
+  // const handleAddNewCustomer = () => {
+  //   alert("Add new customer functionality would open here");
+  // };
 
   return (
     <div className="p-6 bg-white border border-gray-200 rounded-lg">
@@ -23,12 +23,12 @@ export function CustomerSection() {
           <Users className="h-5 w-5 text-[#005660]" />
           Customers
         </h3>
-        <button
+        {/* <button
           onClick={handleAddNewCustomer}
           className="px-3 py-2 text-sm bg-[#005660] hover:bg-[#003c42] text-white rounded-md transition-colors"
         >
           New Customer
-        </button>
+        </button> */}
       </div>
 
       {/* Search */}
