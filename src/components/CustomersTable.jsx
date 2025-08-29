@@ -105,6 +105,42 @@ export function CustomersTable() {
     setEditData(newCustomer);
   };
 
+  // Download customers as CSV
+  const handleDownload = () => {
+    const csvRows = [
+      [
+        "Name",
+        "Last Active",
+        "Date Registered",
+        "Brand",
+        "Orders",
+        "Total Spend",
+        "Country",
+        "Region"
+      ],
+      ...customers.map(c => [
+        c.name,
+        c.lastActive,
+        c.dateRegistered,
+        c.brand,
+        c.orders,
+        c.totalSpend,
+        c.country,
+        c.region
+      ])
+    ];
+    const csvContent = csvRows.map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'customers.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="bg-white rounded-lg border p-4 space-y-6">
       {/* Controls Bar */}
@@ -130,7 +166,7 @@ export function CustomersTable() {
             className="border border-gray-300 rounded px-3 py-2 text-sm bg-white w-56"
           />
           <button
-            className="bg-[var(--theme-color)] hover:opacity-90 text-white px-4 py-2 rounded font-medium transition"
+            className="bg-[#005660] hover:opacity-90 text-white px-4 py-2 rounded font-medium transition"
             onClick={handleAdd}
           >
             Add Customer
@@ -144,7 +180,7 @@ export function CustomersTable() {
         <div className="flex items-center justify-between p-4 border-b">
           <h3 className="font-semibold text-lg">Customers</h3>
           <div className="flex items-center space-x-2">
-            <button className="flex items-center border border-gray-300 rounded px-3 py-1.5 text-sm hover:bg-gray-100">
+            <button className="flex items-center border border-gray-300 rounded px-3 py-1.5 text-sm hover:bg-gray-100" onClick={handleDownload}>
               <Download className="w-4 h-4 mr-2" />
               Download
             </button>
