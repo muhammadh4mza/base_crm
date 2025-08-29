@@ -9,37 +9,37 @@ import { CustomerSection } from "../components/CustomerSection";
 
 
 
-const initialProducts = [
-  { id: 1, name: "Track Suit : Active Wear", price: 45.0, quantity: 1 },
-  { id: 2, name: "Track Suit : Active Wear", price: 52.0, quantity: 1 },
-  { id: 3, name: "Track Suit : Active Wear", price: 20.0, quantity: 1 },
-];
+// const initialProducts = [
+//   { id: 1, name: "Track Suit : Active Wear", price: 45.0, quantity: 1 },
+//   { id: 2, name: "Track Suit : Active Wear", price: 52.0, quantity: 1 },
+//   { id: 3, name: "Track Suit : Active Wear", price: 20.0, quantity: 1 },
+// ];
 
 const AddOrder = () => {
   const [activeTab, setActiveTab] = useState("products");
-  const [search, ] = useState("");
-  const [products, setProducts] = useState(initialProducts);
+  // const [search, ] = useState("");
+  // const [products, setProducts] = useState(initialProducts);
   const [selectedBrand, setSelectedBrand] = useState("cwc");
   const [selectedCustomer, setSelectedCustomer] = useState("");
 
-  // Filter products by search
-  const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // // Filter products by search
+  // const filteredProducts = products.filter((p) =>
+  //   p.name.toLowerCase().includes(search.toLowerCase())
+  // );
 
-  // Handlers for ProductList
-  const handleQuantityChange = (id, delta) => {
-    setProducts((prev) =>
-      prev.map((product) =>
-        product.id === id
-          ? { ...product, quantity: Math.max(1, product.quantity + delta) }
-          : product
-      )
-    );
-  };
-  const handleRemove = (id) => {
-    setProducts((prev) => prev.filter((product) => product.id !== id));
-  };
+  // // Handlers for ProductList
+  // const handleQuantityChange = (id, delta) => {
+  //   setProducts((prev) =>
+  //     prev.map((product) =>
+  //       product.id === id
+  //         ? { ...product, quantity: Math.max(1, product.quantity + delta) }
+  //         : product
+  //     )
+  //   );
+  // };
+  // const handleRemove = (id) => {
+  //   setProducts((prev) => prev.filter((product) => product.id !== id));
+  // };
 
   return (
     <div className="min-h-screen bg-background flex">
