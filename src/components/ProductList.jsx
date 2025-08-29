@@ -44,7 +44,7 @@ export default function ProductList({ products: productsProp, readOnly }) {
   );
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="mx-auto p-6">
       <h1 className="text-2xl font-light mb-8 text-gray-800">Your Cart</h1>
       
       {/* Header */}
