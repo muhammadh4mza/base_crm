@@ -1,3 +1,4 @@
+
 import { 
   Bold, 
   Italic, 
@@ -17,8 +18,6 @@ import { useNavigate } from "react-router-dom";
 
 export function ProductForm() {
 
-  const navigate = useNavigate();
-  const { products, setProducts } = useProducts();
   // Form state
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -33,6 +32,20 @@ export function ProductForm() {
   const [type, setType] = useState("indoor");
   const [vendor, setVendor] = useState("");
 
+  // Calculate profit and margin
+  const parsedPrice = parseFloat(price) || 0;
+  const parsedCost = parseFloat(cost) || 0;
+  const profit = parsedPrice - parsedCost;
+  const margin = parsedPrice > 0 ? ((profit / parsedPrice) * 100).toFixed(2) : '0.00';
+
+  // Variations state
+  const [variations, setVariations] = useState([
+    { name: '', price: '', sku: '' }
+  ]);
+
+  const navigate = useNavigate();
+  const { products, setProducts } = useProducts();
+
   const handleSave = () => {
     const newProduct = {
       id: Date.now(),
@@ -44,6 +57,7 @@ export function ProductForm() {
       price: price ? `$${price}` : "",
       category,
       vendor,
+      variations: variations.filter(v => v.name && v.price)
     };
     setProducts([newProduct, ...products]);
     navigate("/products");
@@ -192,6 +206,42 @@ export function ProductForm() {
                 </div>
               </div>
             </div>
+            {/* Variations Section */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-2">Product Variations</h3>
+              {variations.map((variation, idx) => (
+                <div key={idx} className="grid grid-cols-3 gap-4 mb-2">
+                  <input
+                    type="text"
+                    placeholder="Variation name (e.g. Size, Color)"
+                    value={variation.name}
+                    onChange={e => setVariations(vs => vs.map((v, i) => i === idx ? { ...v, name: e.target.value } : v))}
+                    className="bg-white border border-gray-300 rounded px-3 py-2"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Price"
+                    value={variation.price}
+                    onChange={e => setVariations(vs => vs.map((v, i) => i === idx ? { ...v, price: e.target.value } : v))}
+                    className="bg-white border border-gray-300 rounded px-3 py-2"
+                  />
+                  <input
+                    type="text"
+                    placeholder="SKU (optional)"
+                    value={variation.sku}
+                    onChange={e => setVariations(vs => vs.map((v, i) => i === idx ? { ...v, sku: e.target.value } : v))}
+                    className="bg-white border border-gray-300 rounded px-3 py-2"
+                  />
+                </div>
+              ))}
+              <button
+                type="button"
+                className="mt-2 px-4 py-2 rounded bg-[#005660] text-white hover:bg-[#00444d] text-sm"
+                onClick={() => setVariations(vs => [...vs, { name: '', price: '', sku: '' }])}
+              >
+                + Add Variation
+              </button>
+            </div>
             <div className="flex items-center space-x-2 mb-6">
               <input type="checkbox" id="tax" className="h-4 w-4 rounded border-gray-300" checked={chargeTax} onChange={e => setChargeTax(e.target.checked)} />
               <label htmlFor="tax" className="text-sm font-medium">Charge tax on this product</label>
@@ -212,11 +262,15 @@ export function ProductForm() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Profit</label>
-                <div className="h-10 bg-gray-200 rounded-md flex items-center px-3 text-gray-400">---</div>
+                <div className="h-10 bg-gray-200 rounded-md flex items-center px-3 text-gray-900">
+                  {parsedPrice && parsedCost ? `$${profit.toFixed(2)}` : '---'}
+                </div>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Margin</label>
-                <div className="h-10 bg-gray-200 rounded-md flex items-center px-3 text-gray-400">---</div>
+                <div className="h-10 bg-gray-200 rounded-md flex items-center px-3 text-gray-900">
+                  {parsedPrice && parsedCost ? `${margin}%` : '---'}
+                </div>
               </div>
             </div>
           </div>
