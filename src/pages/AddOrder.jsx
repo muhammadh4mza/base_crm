@@ -5,7 +5,7 @@ import { Sidebar } from "../components/Sidebar";
 import { OrderTabs } from "../components/OrderTabs";
 // import  ProductSearch  from "../components/ProductSearch";
 import { CustomerSection } from "../components/CustomerSection";
-import ProductList from "../components/ProductList";
+// import ProductList from "../components/ProductList";
 
 
 
@@ -52,12 +52,12 @@ const AddOrder = () => {
             <div className="lg:col-span-3 space-y-6">
               <OrderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
               {/* <ProductSearch search={search} setSearch={setSearch} /> */}
-              <ProductList
+              {/* <ProductList
                 products={filteredProducts}
                 onQuantityChange={handleQuantityChange}
                 onRemove={handleRemove}
                 activeTab={activeTab}
-              />
+              /> */}
             </div>
             {/* Sidebar */}
             <div className="lg:col-span-1">

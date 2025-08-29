@@ -186,6 +186,7 @@ export function OrdersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const pageSize = 2; // Number of orders per page
+  const navigate = useNavigate();
 
   // Filter orders based on active tab and search term
   const filteredOrders = orders.filter(order => {
@@ -228,7 +229,21 @@ export function OrdersPage() {
   }, [activeTab, searchTerm, statusFilter]);
 
   return (
-    <div className="flex-1 overflow-auto bg-gray-50 p-4">
+    <div className="flex-1 overflow-auto bg-gray-50 px-4">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Orders</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage your orders and fulfillment</p>
+        </div>
+        <button
+          className="bg-[#005660] text-white px-4 py-2.5 rounded-lg hover:bg-[#00444d] transition flex items-center space-x-2"
+          onClick={() => navigate('/add-order')}
+        >
+          <span>+ Add Order</span>
+        </button>
+      </div>
+
       {/* Filter Tabs + Search/Filters */}
       <div className="mb-6 bg-black rounded-xl p-4">
         <div className="flex flex-col md:flex-row md:items-center gap-4">

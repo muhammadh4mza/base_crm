@@ -20,8 +20,12 @@ export const DashboardHeader = ({ title = "Dashboard" }) => {
           </span>
         </div>
 
-        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center">
-          <span className="text-xs sm:text-sm font-medium text-gray-600">CWC</span>
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center overflow-hidden">
+          <img
+            src={require("../assets/images/tracksuit.png")}
+            alt="User Icon"
+            className="object-cover w-full h-full"
+          />
         </div>
       </div>
     </header>
