@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Eye, Download, Send, Trash2, Pencil } from "lucide-react";
+import AddInvoiceModal from "./AddInvoiceModal";
 
 const initialInvoices = [
   {
@@ -62,6 +63,7 @@ export function InvoiceTable() {
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({});
   const [statusFilter, setStatusFilter] = useState("All");
+  const [showAddInvoice, setShowAddInvoice] = useState(false);
 
   const filteredInvoices = invoices.filter((inv) => {
     const s = search.toLowerCase();
@@ -90,20 +92,6 @@ export function InvoiceTable() {
     setEditData({});
   };
 
-  const handleAdd = () => {
-    const newInvoice = {
-      id: Date.now().toString(),
-      number: "",
-      customer: "",
-      date: "",
-      dueDate: "",
-      amount: "",
-      status: "draft",
-    };
-    setInvoices((prev) => [newInvoice, ...prev]);
-    setEditId(newInvoice.id);
-    setEditData(newInvoice);
-  };
 
   return (
     <div className="bg-white rounded-lg border p-4 space-y-6">
@@ -130,9 +118,9 @@ export function InvoiceTable() {
           </select>
           <button
             className="bg-[#005660] hover:bg-[#00444d] text-white px-4 py-2 rounded font-medium transition"
-            onClick={handleAdd}
+            onClick={() => setShowAddInvoice(true)}
           >
-             Invoice
+            Add Invoice
           </button>
         </div>
       </div>
@@ -298,6 +286,8 @@ export function InvoiceTable() {
           </table>
         </div>
       </div>
+      {/* Add Invoice Modal Popup */}
+      <AddInvoiceModal open={showAddInvoice} onClose={() => setShowAddInvoice(false)} />
     </div>
   );
 }
