@@ -368,8 +368,7 @@ export function OrdersTable({ orders, setOrders, onSelectOrder }) {
     }
   };
   const handleEdit = (order) => {
-    // For now, just navigate to add-order with state (future: implement edit mode)
-    navigate("#", { state: { order } });
+    navigate("/add-order", { state: { order } });
   };
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
@@ -383,6 +382,7 @@ export function OrdersTable({ orders, setOrders, onSelectOrder }) {
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Channel</th>
+            <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
             <th className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Status</th>
@@ -407,6 +407,9 @@ export function OrdersTable({ orders, setOrders, onSelectOrder }) {
               <td className="p-4 text-gray-500">{order.date}</td>
               <td className="p-4 text-gray-500">{order.customer}</td>
               <td className="p-4 text-gray-500">{order.channel}</td>
+              <td className="p-4 text-gray-500">
+                {((orders.indexOf(order) % 2) === 0 ? 'CWC' : 'BDDAZZ')}
+              </td>
               <td className="p-4 text-gray-500">{order.items}</td>
               <td className="p-4 font-medium text-gray-900">
                 ${

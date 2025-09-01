@@ -1,19 +1,55 @@
+
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from "recharts";
 
-const data = [
-  { name: 'Jan', sales: 60 },
-  { name: 'Feb', sales: 80 },
-  { name: 'Mar', sales: 55 },
-  { name: 'Apr', sales: 78 },
-  { name: 'May', sales: 58 },
-  { name: 'Jun', sales: 82 },
-  { name: 'Jul', sales: 75 },
-  { name: 'Aug', sales: 60 },
-  { name: 'Sep', sales: 85 },
+const salesData = [
+  { name: 'Jan', value: 60 },
+  { name: 'Feb', value: 80 },
+  { name: 'Mar', value: 55 },
+  { name: 'Apr', value: 78 },
+  { name: 'May', value: 58 },
+  { name: 'Jun', value: 82 },
+  { name: 'Jul', value: 75 },
+  { name: 'Aug', value: 60 },
+  { name: 'Sep', value: 85 },
+];
+const revenueData = [
+  { name: 'Jan', value: 120 },
+  { name: 'Feb', value: 140 },
+  { name: 'Mar', value: 110 },
+  { name: 'Apr', value: 150 },
+  { name: 'May', value: 130 },
+  { name: 'Jun', value: 160 },
+  { name: 'Jul', value: 155 },
+  { name: 'Aug', value: 140 },
+  { name: 'Sep', value: 170 },
+];
+const ordersData = [
+  { name: 'Jan', value: 30 },
+  { name: 'Feb', value: 40 },
+  { name: 'Mar', value: 35 },
+  { name: 'Apr', value: 38 },
+  { name: 'May', value: 32 },
+  { name: 'Jun', value: 45 },
+  { name: 'Jul', value: 41 },
+  { name: 'Aug', value: 39 },
+  { name: 'Sep', value: 50 },
 ];
 
-export const SalesChart = () => {
-  const percentChange = ((data[data.length - 1].sales - data[0].sales) / data[0].sales) * 100;
+
+export const SalesChart = ({ chartType = 'sales' }) => {
+  let chartData, chartLabel;
+  if (chartType === 'sales') {
+    chartData = salesData;
+    chartLabel = 'Total Sales';
+  } else if (chartType === 'revenue') {
+    chartData = revenueData;
+    chartLabel = 'Revenue';
+  } else {
+    chartData = ordersData;
+    chartLabel = 'Orders';
+  }
+
+  const percentChange = ((chartData[chartData.length - 1].value - chartData[0].value) / chartData[0].value) * 100;
   const percentChangeDisplay = percentChange >= 0 ? `+${percentChange.toFixed(1)}%` : `${percentChange.toFixed(1)}%`;
   const percentChangeColor = percentChange >= 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
 
@@ -27,7 +63,7 @@ export const SalesChart = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div>
           <h3 className="text-base sm:text-lg font-semibold text-gray-800 flex items-center gap-2">
-            Total Sales
+            {chartLabel}
             <span className={`ml-1 sm:ml-2 px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium ${percentChangeColor}`}>
               {percentChangeDisplay}
             </span>
@@ -49,7 +85,7 @@ export const SalesChart = () => {
           <div className="relative">
             <select className="appearance-none w-full bg-gray-100 border border-gray-300 rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#005660] pr-6">
               <option>Sort By Date</option>
-              <option>Sort By Sales</option>
+              <option>Sort By Value</option>
             </select>
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
               <path d="M6 9L10 5L14 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -61,7 +97,7 @@ export const SalesChart = () => {
       {/* Chart */}
       <div className="h-60 sm:h-80">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+          <LineChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#005660" stopOpacity={0.25}/>
@@ -88,11 +124,11 @@ export const SalesChart = () => {
                 borderRadius: '8px',
                 boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
               }}
-              formatter={(value) => [`$${value}k`, 'Sales']}
+              formatter={(value) => [`$${value}k`, chartLabel]}
             />
             <Line 
               type="monotone" 
-              dataKey="sales" 
+              dataKey="value" 
               stroke="#005660" 
               strokeWidth={2.5}
               dot={{ fill: '#fff', stroke: '#005660', strokeWidth: 2, r: 4 }}
