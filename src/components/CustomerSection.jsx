@@ -16,6 +16,7 @@ export function CustomerSection() {
   // };
 
   return (
+    <>
     <div className="p-6 bg-white border border-gray-200 rounded-lg">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
@@ -23,12 +24,7 @@ export function CustomerSection() {
           <Users className="h-5 w-5 text-[#005660]" />
           Customers
         </h3>
-        {/* <button
-          onClick={handleAddNewCustomer}
-          className="px-3 py-2 text-sm bg-[#005660] hover:bg-[#003c42] text-white rounded-md transition-colors"
-        >
-          New Customer
-        </button> */}
+        {/* actions could go here (e.g. New Customer) */}
       </div>
 
       {/* Search */}
@@ -82,5 +78,6 @@ export function CustomerSection() {
         </div>
       )}
     </div>
+    </>
   );
 }

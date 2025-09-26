@@ -2,12 +2,39 @@ import React, { useState } from "react";
 import { Package, Calendar, PlusCircle, Search } from "lucide-react";
 import { useProducts } from "../context/ProductsContext";
 
-export function OrderTabs() {
+export function OrderTabs({ discount }) {
   const [activeTab, setActiveTab] = useState("products");
   const [searchTerm, setSearchTerm] = useState("");
   const { products } = useProducts();
   const [orderProducts, setOrderProducts] = useState([]); // Products added to the order
   const [customItem, setCustomItem] = useState({ name: '', description: '', price: '', quantity: 1 });
+
+  // Helpers
+  const formatCurrency = (n) => `$${Number(n || 0).toFixed(2)}`;
+
+  const calcSubTotal = (items) => {
+    let total = 0;
+    items.forEach(item => {
+      let price = item.price;
+      if (typeof price === 'string' && price.startsWith('$')) price = price.slice(1);
+      total += Number(price || 0) * (item.quantity || 0);
+    });
+    return total;
+  };
+
+  const calcDiscountAmount = (subtotal) => {
+    if (!discount) return 0;
+    const type = discount.type;
+    const val = Number(discount.value) || 0;
+    if (type === 'Amount') {
+      // don't allow discount bigger than subtotal
+      return Math.min(val, subtotal);
+    }
+    if (type === 'Percentage') {
+      return subtotal * (val / 100);
+    }
+    return 0;
+  };
 
   const reserveItems = [
     { id: 1, name: "Limited Edition Jacket", price: 129.99, availableDate: "2023-12-15" },
@@ -149,19 +176,21 @@ export function OrderTabs() {
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between items-center mt-4 font-semibold text-gray-900">
-                <span>Total</span>
-                <span>
-                  {(() => {
-                    let total = 0;
-                    orderProducts.forEach(item => {
-                      let price = item.price;
-                      if (typeof price === 'string' && price.startsWith('$')) price = price.slice(1);
-                      total += Number(price) * item.quantity;
-                    });
-                    return `$${total.toFixed(2)}`;
-                  })()}
-                </span>
+              <div className="mt-4 space-y-1 text-gray-900">
+                <div className="flex justify-between">
+                  <span className="text-sm">Subtotal</span>
+                  <span className="text-sm">{formatCurrency(calcSubTotal(orderProducts))}</span>
+                </div>
+                {discount && (
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>Discount{discount.reason ? ` — ${discount.reason}` : ''}</span>
+                    <span>-{formatCurrency(calcDiscountAmount(calcSubTotal(orderProducts)))}</span>
+                  </div>
+                )}
+                <div className="flex justify-between font-semibold">
+                  <span>Total</span>
+                  <span>{formatCurrency(calcSubTotal(orderProducts) - calcDiscountAmount(calcSubTotal(orderProducts)))}</span>
+                </div>
               </div>
               <button
                 className="w-full mt-6 py-3 bg-[#005660] text-white rounded hover:bg-[#00444d] transition text-lg font-semibold"
@@ -263,19 +292,30 @@ export function OrderTabs() {
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between items-center mt-4 font-semibold text-gray-900">
-                <span>Total</span>
-                <span>
-                  {(() => {
-                    let total = 0;
-                    orderProducts.filter(item => String(item.id).startsWith('reserve-')).forEach(item => {
-                      let price = item.price;
-                      if (typeof price === 'string' && price.startsWith('$')) price = price.slice(1);
-                      total += Number(price) * item.quantity;
-                    });
-                    return `$${total.toFixed(2)}`;
-                  })()}
-                </span>
+              <div className="mt-4 space-y-1 text-gray-900">
+                {(() => {
+                  const items = orderProducts.filter(item => String(item.id).startsWith('reserve-'));
+                  const subtotal = calcSubTotal(items);
+                  const discountAmt = calcDiscountAmount(subtotal);
+                  return (
+                    <>
+                      <div className="flex justify-between text-sm">
+                        <span>Subtotal</span>
+                        <span>{formatCurrency(subtotal)}</span>
+                      </div>
+                      {discount && (
+                        <div className="flex justify-between text-sm text-gray-600">
+                          <span>Discount{discount.reason ? ` — ${discount.reason}` : ''}</span>
+                          <span>-{formatCurrency(discountAmt)}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between font-semibold">
+                        <span>Total</span>
+                        <span>{formatCurrency(subtotal - discountAmt)}</span>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
               <button
                 className="w-full mt-6 py-3 bg-[#005660] text-white rounded hover:bg-[#00444d] transition text-lg font-semibold"
@@ -391,19 +431,30 @@ export function OrderTabs() {
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between items-center mt-4 font-semibold text-gray-900">
-                <span>Total</span>
-                <span>
-                  {(() => {
-                    let total = 0;
-                    orderProducts.filter(item => String(item.id).startsWith('custom-')).forEach(item => {
-                      let price = item.price;
-                      if (typeof price === 'string' && price.startsWith('$')) price = price.slice(1);
-                      total += Number(price) * item.quantity;
-                    });
-                    return `$${total.toFixed(2)}`;
-                  })()}
-                </span>
+              <div className="mt-4 space-y-1 text-gray-900">
+                {(() => {
+                  const items = orderProducts.filter(item => String(item.id).startsWith('custom-'));
+                  const subtotal = calcSubTotal(items);
+                  const discountAmt = calcDiscountAmount(subtotal);
+                  return (
+                    <>
+                      <div className="flex justify-between text-sm">
+                        <span>Subtotal</span>
+                        <span>{formatCurrency(subtotal)}</span>
+                      </div>
+                      {discount && (
+                        <div className="flex justify-between text-sm text-gray-600">
+                          <span>Discount{discount.reason ? ` — ${discount.reason}` : ''}</span>
+                          <span>-{formatCurrency(discountAmt)}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between font-semibold">
+                        <span>Total</span>
+                        <span>{formatCurrency(subtotal - discountAmt)}</span>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
               <button
                 className="w-full mt-6 py-3 bg-[#005660] text-white rounded hover:bg-[#00444d] transition text-lg font-semibold"
