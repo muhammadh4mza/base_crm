@@ -18,7 +18,7 @@ const AddOrder = () => {
       <div className="min-h-screen bg-background flex">
         <Sidebar />
         <div className="flex-1">
-          <DashboardHeader />
+          <DashboardHeader title="Add Order" />
           <div className="p-6">
             <div className="flex items-start justify-between mb-4">
               <div />
