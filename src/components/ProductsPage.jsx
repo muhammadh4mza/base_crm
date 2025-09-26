@@ -3,6 +3,165 @@ import { useNavigate } from "react-router-dom";
 import { useProducts } from "../context/ProductsContext";
 import { Trash2, Pencil } from "lucide-react";
 
+// Helper: trigger browser download
+function downloadBlob(filename, content, mime = 'application/json') {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function exportProductsToJSON(products) {
+  const filename = `products_${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
+  downloadBlob(filename, JSON.stringify(products, null, 2), 'application/json');
+}
+
+function exportProductsToCSV(products) {
+  if (!products || products.length === 0) {
+    alert('No products to export');
+    return;
+  }
+  const headers = Object.keys(products[0]).filter(k => k !== 'image');
+  const rows = [headers.join(',')];
+  for (const p of products) {
+    const vals = headers.map(h => {
+      const v = p[h] == null ? '' : String(p[h]);
+      if (v.includes(',') || v.includes('\n') || v.includes('"')) {
+        return '"' + v.replace(/"/g, '""') + '"';
+      }
+      return v;
+    });
+    rows.push(vals.join(','));
+  }
+  const csv = rows.join('\n');
+  const filename = `products_${new Date().toISOString().replace(/[:.]/g,'-')}.csv`;
+  downloadBlob(filename, csv, 'text/csv');
+}
+
+// CSV helpers for platform-specific exports
+function escapeCsvCell(val) {
+  if (val == null) return '';
+  const s = String(val);
+  if (s.includes(',') || s.includes('\n') || s.includes('"')) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+function parseInventoryQuantity(inv, fallbackQuantity) {
+  if (inv == null) return fallbackQuantity != null ? fallbackQuantity : '';
+  const m = String(inv).match(/(\d+)/);
+  if (m) return parseInt(m[1], 10);
+  return fallbackQuantity != null ? fallbackQuantity : '';
+}
+
+function exportToShopifyCSV(products) {
+  if (!products || products.length === 0) {
+    alert('No products to export');
+    return;
+  }
+  const headers = [
+    'Handle','Title','Body (HTML)','Vendor','Type','Tags','Published','Option1 Name','Option1 Value','Variant SKU','Variant Grams','Variant Inventory Qty','Variant Inventory Policy','Variant Price','Image Src'
+  ];
+  const rows = [headers.join(',')];
+
+  for (const p of products) {
+    const handle = (p.name || `product-${p.id}`)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    const title = p.name || '';
+    const body = p.body_html || '';
+    const vendor = p.vendor || '';
+    const type = p.category || p.type || '';
+    const published = p.status && p.status.toLowerCase() === 'active' ? 'TRUE' : 'FALSE';
+    const sku = p.sku || `P-${p.id}`;
+    const inventoryQty = parseInventoryQuantity(p.inventory, p.quantity);
+    const inventoryPolicy = (p.inventory_policy) || (inventoryQty === '' || inventoryQty === 0 ? 'continue' : 'deny');
+    const price = p.price ? String(p.price).replace(/[^0-9.]/g, '') : '';
+    const imageSrc = p.image || '';
+
+    const row = [
+      escapeCsvCell(handle),
+      escapeCsvCell(title),
+      escapeCsvCell(body),
+      escapeCsvCell(vendor),
+      escapeCsvCell(type),
+      '',
+      published,
+      'Title',
+      '',
+      escapeCsvCell(sku),
+      '',
+      inventoryQty !== '' ? String(inventoryQty) : '',
+      escapeCsvCell(inventoryPolicy),
+      price,
+      escapeCsvCell(imageSrc),
+    ];
+    rows.push(row.join(','));
+  }
+
+  const csv = rows.join('\n');
+  const filename = `shopify_products_${new Date().toISOString().replace(/[:.]/g,'-')}.csv`;
+  downloadBlob(filename, csv, 'text/csv');
+}
+
+function exportToWooCSV(products) {
+  if (!products || products.length === 0) {
+    alert('No products to export');
+    return;
+  }
+  const headers = [
+    'ID','Type','SKU','Name','Published','Is featured?','Visibility in catalog','Short description','Description','Tax status','In stock?','Stock','Backorders allowed?','Sold individually?','Regular price','Categories','Tags','Shipping class','Images'
+  ];
+  const rows = [headers.join(',')];
+
+  for (const p of products) {
+    const id = p.id != null ? String(p.id) : '';
+    const name = p.name || '';
+    const sku = p.sku || `P-${p.id}`;
+    const published = p.status && p.status.toLowerCase() === 'active' ? '1' : '0';
+    const stock = parseInventoryQuantity(p.inventory, p.quantity);
+    const inStock = stock > 0 ? '1' : '0';
+    const price = p.price ? String(p.price).replace(/[^0-9.]/g, '') : '';
+    const images = p.image || '';
+    const categories = p.category || p.type || '';
+    const desc = p.body_html || '';
+
+    const row = [
+      escapeCsvCell(id),
+      'simple',
+      escapeCsvCell(sku),
+      escapeCsvCell(name),
+      published,
+      '0',
+      'visible',
+      '',
+      escapeCsvCell(desc),
+      'taxable',
+      inStock,
+      stock !== '' ? String(stock) : '',
+      'no',
+      'no',
+      price,
+      escapeCsvCell(categories),
+      '',
+      '',
+      escapeCsvCell(images),
+    ];
+    rows.push(row.join(','));
+  }
+
+  const csv = rows.join('\n');
+  const filename = `woocommerce_products_${new Date().toISOString().replace(/[:.]/g,'-')}.csv`;
+  downloadBlob(filename, csv, 'text/csv');
+}
+
 const initialFilters = [
   { name: "All", count: 12 },
   { name: "Active", count: 8 },
@@ -127,12 +286,42 @@ export function ProductsPage() {
           <h1 className="text-2xl font-bold text-gray-900">Product Inventory</h1>
           <p className="text-sm text-gray-500 mt-1">Manage your products and inventory</p>
         </div>
-        <button
-          className="bg-[#005660] text-white px-4 py-2.5 rounded-lg hover:bg-[#00444d] transition flex items-center space-x-2"
-          onClick={() => navigate('/add-product')}
-        >
-          <span>+ Add Product</span>
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            className="bg-white border border-gray-300 text-gray-700 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm"
+            onClick={() => exportProductsToJSON(products)}
+            title="Download products as JSON"
+          >
+            Export JSON
+          </button>
+          <button
+            className="bg-white border border-gray-300 text-gray-700 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm"
+            onClick={() => exportProductsToCSV(products)}
+            title="Download products as CSV (flat)"
+          >
+            Export CSV
+          </button>
+          <button
+            className="bg-white border border-gray-300 text-gray-700 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm"
+            onClick={() => exportToShopifyCSV(products)}
+            title="Download Shopify CSV for full catalog"
+          >
+            Export Shopify CSV
+          </button>
+          <button
+            className="bg-white border border-gray-300 text-gray-700 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm"
+            onClick={() => exportToWooCSV(products)}
+            title="Download WooCommerce CSV for full catalog"
+          >
+            Export Woo CSV
+          </button>
+          <button
+            className="bg-[#005660] text-white px-4 py-2.5 rounded-lg hover:bg-[#00444d] transition flex items-center space-x-2"
+            onClick={() => navigate('/add-product')}
+          >
+            <span>+ Add Product</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter Tabs + Search/Filters */}

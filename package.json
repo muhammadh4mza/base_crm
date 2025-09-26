@@ -7,11 +7,14 @@
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "@woocommerce/woocommerce-rest-api": "^1.0.2",
+    "axios": "^1.12.2",
+    "dotenv": "^17.2.2",
     "lucide-react": "^0.540.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^0.0.0",
     "react-smooth": "^4.0.4",
     "react-transition-group": "^4.4.5",
     "recharts": "^2.7.2",
@@ -21,8 +24,15 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "export:shopify": "node scripts/export_shopify.js",
+    "export:woocommerce": "node scripts/export_woocommerce.js",
+    "export:all": "node scripts/export_shopify.js && node scripts/export_woocommerce.js",
+    "sync:shopify": "node scripts/sync_shopify.js",
+    "sync:woocommerce": "node scripts/sync_woocommerce.js",
+    "backend:start": "node server/server.js"
   },
+  "bin": {},
   "eslintConfig": {
     "extends": [
       "react-app",

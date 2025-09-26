@@ -94,7 +94,7 @@ export function InvoiceTable() {
 
 
   return (
-    <div className="bg-white rounded-lg border p-4 space-y-6">
+    <div className="bg-white rounded-lg border p-4 space-y-6 m-5">
       {/* Controls Bar */}
       <div className="flex flex-col md:flex-row md:justify-end md:items-center gap-4">
         <div className="flex items-center gap-2 justify-end w-full">

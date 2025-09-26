@@ -36,7 +36,7 @@ const ordersData = [
 ];
 
 
-export const SalesChart = ({ chartType = 'sales' }) => {
+export const SalesChart = ({ chartType = 'sales' }) => {  
   let chartData, chartLabel;
   if (chartType === 'sales') {
     chartData = salesData;

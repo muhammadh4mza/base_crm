@@ -142,7 +142,7 @@ export function CustomersTable() {
   };
 
   return (
-    <div className="bg-white rounded-lg border p-4 space-y-6">
+    <div className="bg-white rounded-lg border p-4 space-y-6 m-5">
       {/* Controls Bar */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center space-x-4">
